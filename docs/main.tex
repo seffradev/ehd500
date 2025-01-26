@@ -1,0 +1,75 @@
+\documentclass[12pt]{report}
+\usepackage[
+    a4paper,
+    top=1cm,
+    bottom=2cm,
+    left=3cm,
+    right=3cm,
+    headheight=12pt,
+    includehead,
+    includefoot,
+    heightrounded
+]{geometry}
+\usepackage{graphicx}
+\usepackage[natbib=true, style=numeric, sorting=none]{biblatex}
+\usepackage{fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[style=iso, en-GB]{datetime2}
+\usepackage{svg}
+\usepackage{titling}
+
+\newcommand{\startappendix}[1]{
+    \chapter{#1}
+    \setcounter{page}{1}
+    \pagestyle{fancy}
+    \fancyhf[L,R,O,E]{}
+    \fancyhead[C]{\textit{\title}}
+    \fancyfoot[L]{Appendix}
+    \fancyfoot[C]{\thechapter:\thepage}
+    \thispagestyle{fancy}
+}
+
+\input{utils/general-headings}
+
+\addbibresource{references.bib}
+
+\input{variables}
+
+\begin{document}
+
+\include{pages/titlepage}
+
+\setcounter{secnumdepth}{0}
+\pagenumbering{roman}
+
+\include{pages/summary}
+
+\pagestyle{fancy}
+\fancyhf[L,R,O,E]{}
+\fancyhead[C]{\textit{\title}}
+\fancyfoot[C]{\thepage}
+
+\fancypagestyle{plain}{%
+    \fancyhf[L,R,O,E]{}
+    \fancyhead[C]{\textit{\title}}
+    \fancyfoot[C]{\thepage}
+}
+
+\include{pages/preface}
+
+\include{pages/tableofcontents}
+
+\input{utils/mainmatter-headings}
+
+\include{chapters/chapters}
+
+\input{utils/bibliography}
+
+\input{appendices/appendices}
+
+\end{document}
