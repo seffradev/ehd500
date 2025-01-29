@@ -33,6 +33,9 @@
 \titleformat{\section}
   {\normalfont\fontsize{12}{12}\bfseries}{\thesection}{1em}{}
 
+\titleformat{\subsection}
+  {\normalfont\fontsize{12}{12}\itshape}{\thesubsection}{1em}{}
+
 \pagestyle{fancy}
 \fancyhf[L,R,O,E]{}
 \fancyhead[C]{\textbf{Proposal -- Degree project}}
@@ -51,36 +54,92 @@ Avdelningen för Datateknik, 461 86 Trollhättan
 \thispagestyle{fancy}
 
 \section*{Title of project}
-Your preliminary title
+An alternative implementation to SIM over-the-air -- A utility for distributed mobile network testing
 
-\section*{Participants / authors}
-Name, phone, email and study program
+\section*{Author}
+Hampus Avekvist,\newline
+\verb|hampus.avekvist@hey.com|,\newline
++46 76 035 22 26,\newline
+Computer Engineering -- programming and network technology, 180 hp
 
-\section*{Company (if applicable)}
-Name, address
+\section*{Company}
+Leissner Data AB,\newline
+Nohabgatan 11H, SE-461 53 Trollhättan
 
-\section*{Supervisor at company (if applicable)}
-Name, phone, email
+\section*{Supervisor at company}
+Mikael Johansson,\newline
+\verb|mj@leissner.se|,\newline
++46 70 180 95 20
 
-\section*{Project background (including literature)}
-Describe the background of your work and connect it to at least
-2 research articles \cite{höst2015}.
+\section*{Project background}
+Scaled up version of \cite{osmo-remsim}.
+
+\begin{itemize}
+    \item TODO: Define SIM
+    \item TODO: Define APDU
+\end{itemize}
 
 \section*{Problem formulation}
-Describe the task or question you are going to solve.
 
-State realistic and measurable goals.
+The thesis entails the creation and documentation of the following
+components:
+\begin{itemize}
+    \item SIM-to-IP device
+    \item IP-to-radio interface device
+    \item SIM-radio interface connectivity hub
+    \item Graphical user interface
+\end{itemize}
+Elaboration of each component is available below.
+
+\subsection*{SIM-to-IP device}
+This component enables the transmission of APDU:s to- and from
+the SIM-side over an IP network. The device uses a smart card
+reader and a programmable IP-enabled general purpose computer
+(e.g. a Raspberry Pi).
+
+\subsection*{IP-to-radio interface device}
+This component enables the transmission of APDU:s to- and from
+the mobile side over an IP network.
+
+\subsection*{SIM-radio interface connectivity hub}
+This component orchestrates the connections between different SIM
+and radio interfaces, allowing switching of one SIM to another.
+
+\subsection*{Graphical user interface}
+This component provides an administration interface for the
+connectivity hub. An initial design is a list of dropdowns, where
+each dropdown refer to a radio interface and the possible
+selections available in the dropdown are free SIM cards to connect
+to.
+
+The creation of a utility device that enables a SIM, connected
+through a smart card reader, to communicate with a mobile network
+enabled device over IP.
+
+The utility, aside from the physical components connecting a radio
+interface to a SIM card, will include a service for switching the
+SIM card on demand via a graphical user interface.
+
+TODO: Describe the task or question you are going to solve.
+
+TODO: State realistic and measurable goals.
 
 \section*{Limitations (if applicable)}
 If you want to emphasize something that should not be included
 in your work, state these things here.
 
 \section*{Methodology}
-Describe how you will carry out your work. Who will do what?
+TODO: Describe how you will carry out your work. Who will do what?
 
 \section*{Resource plan (if applicable)}
-If you need any special equipment or other resources to carry out
-your work state that here.
+Equipment required will be provided by Leissner Data AB.
+The following will (minimally) be used in the project:
+
+\begin{itemize}
+    \item A couple of smart card readers
+    \item A couple of user equipment (modems, mobile phones)
+    \item Two Raspberry Pi
+\end{itemize}
 
 \printbibliography[
     heading=bibintoc,
