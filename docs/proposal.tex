@@ -54,7 +54,8 @@ Avdelningen för Datateknik, 461 86 Trollhättan
 \thispagestyle{fancy}
 
 \section*{Title of project}
-An alternative implementation to SIM over-the-air -- A utility for distributed mobile network testing
+An implementation of a remote SIM bank -- A utility for
+configuration, reprogramming and distributed coverage testing
 
 \section*{Author}
 Hampus Avekvist,\newline
@@ -72,12 +73,18 @@ Mikael Johansson,\newline
 +46 70 180 95 20
 
 \section*{Project background}
-Scaled up version of \cite{osmo-remsim}.
 
-\begin{itemize}
-    \item TODO: Define SIM
-    \item TODO: Define APDU
-\end{itemize}
+Subscriber Identity Module (SIM) is a smart card for telecommunication.
+Like other smart cards they communicate with a reader, like a mobile
+phone or a modem, by sending application protocol data units (APDU:s).
+This project intends to build a utility that can intercept, manipulate
+and forward APDU:s. The forwarding is intended over an IP network to
+allow having user equipment (e.g. a modem or a mobile phone) in one
+country with the SIM card in another. An example for when this is
+useful is in roaming testing services from a mobile network operator
+(MNO), as well as mobile virtual network operator (MVNO). Existing
+work which inspires this has been made by Osmocom \cite{osmo-remsim}
+and [TODO: SIM bank work maybe?] \cite{secondary-source}.
 
 \section*{Problem formulation}
 
@@ -99,37 +106,42 @@ reader and a programmable IP-enabled general purpose computer
 
 \subsection*{IP-to-radio interface device}
 This component enables the transmission of APDU:s to- and from
-the mobile side over an IP network.
+the user equipment side over an IP network. Powered by an
+IP-enabled general purpose computer (e.g. a Raspberry Pi)
+connected to the user equipment.
 
 \subsection*{SIM-radio interface connectivity hub}
 This component orchestrates the connections between different SIM
-and radio interfaces, allowing switching of one SIM to another.
+and user equipment, allowing switching of one SIM to another. It
+also provides manipulation, interception and capture of APDU:s.
 
-\subsection*{Graphical user interface}
+\subsection*{Graphical user interface (GUI)}
 This component provides an administration interface for the
 connectivity hub. An initial design is a list of dropdowns, where
-each dropdown refer to a radio interface and the possible
-selections available in the dropdown are free SIM cards to connect
-to.
+each dropdown refer to user equipment and the possible selections
+available in the dropdown are free SIM cards to connect to.
 
-The creation of a utility device that enables a SIM, connected
-through a smart card reader, to communicate with a mobile network
-enabled device over IP.
-
-The utility, aside from the physical components connecting a radio
-interface to a SIM card, will include a service for switching the
-SIM card on demand via a graphical user interface.
-
-TODO: Describe the task or question you are going to solve.
-
-TODO: State realistic and measurable goals.
-
-\section*{Limitations (if applicable)}
-If you want to emphasize something that should not be included
-in your work, state these things here.
+\section*{Limitations}
+The project will focus on enabling roaming testing and will, if
+time allows, extend to manipulation, interception, packet capture
+and reprogramming. The aforementioned four components are viable
+even in this case and primarily the connectivity hub and GUI would
+be expanded.
 
 \section*{Methodology}
-TODO: Describe how you will carry out your work. Who will do what?
+
+The preparatory work will contain planning and experimentation of
+different implementations for the library enabling smart card
+connectivity \cite{pcsc}. This experimentation is due to
+observed limitations in some implementation of the library from
+previous work, and this will drive the language choice for the
+SIM-interfacing parts.
+
+An initial implementation with a singular user equipment and
+singular SIM will be constructed, where communication flows over
+IP. This doesn't require a proper connectivity hub nor a GUI.
+After that, implementation of a connectivity hub will be started
+and this enables the scaling to multiple SIM and devices.
 
 \section*{Resource plan (if applicable)}
 Equipment required will be provided by Leissner Data AB.
