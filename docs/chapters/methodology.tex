@@ -48,6 +48,23 @@ Most useful in relation to hot code paths and tight loops.
 
 \subsection{Automated tooling}
 
+Tools for documentation generation will be utilized, both for
+automatic generation of changelogs that document available
+functionality in an operational perspective but also tools that
+generate software library documentation from code comments.
+Examples of such tools are Doxygen \cite{doxygen} for software
+library documentation generation and git cliff \cite{git-cliff} for
+changelog generation.
+
+To enable changelog generation, git cliff requires a consistent
+format of git commits \cite{git-cliff} called Conventional Commits
+\cite{conventional-commits}. This, using git cliff also enables
+automatic version numbering \cite{git-cliff-bump-version} by
+following the Semantic Versioning (SemVer) specification
+\cite{semver}. If required, additional commit types will be created
+and documented(in ADR:s?) with custom git parsers added to git cliff
+\cite{git-cliff-tips-and-tricks}.
+
 Automated testing.
 gtest and gmock (if C++)
 
