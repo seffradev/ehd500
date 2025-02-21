@@ -5,6 +5,6 @@ RUN apt install inkscape -y
 
 WORKDIR /docs
 
-COPY docs .
+COPY docs/whitepaper .
 
-ENTRYPOINT [ "pdflatex", "--shell-escape", "main.tex", "&&", "biber", "main", "&&", "pdflatex", "--shell-escape", "main.tex" ]
+ENTRYPOINT [ "sh", "-c", "entrypoint.sh" ]

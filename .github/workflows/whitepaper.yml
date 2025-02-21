@@ -10,8 +10,8 @@ jobs:
       - run: sudo apt install inkscape texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-bibtex-extra biber texlive-lang-european
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: cd ${{ github.workspace }}/docs && ./entrypoint.sh
+      - run: cd ${{ github.workspace }}/whitepaper/docs && ./entrypoint.sh
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          path: ${{ github.workspace }}/docs/*.pdf
+          path: ${{ github.workspace }}/docs/whitepaper/*.pdf

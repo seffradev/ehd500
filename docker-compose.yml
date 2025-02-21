@@ -5,4 +5,4 @@ services:
       dockerfile: Dockerfile
       target: development
     volumes:
-      - ./docs:/docs
+      - ./docs/whitepaper:/docs
