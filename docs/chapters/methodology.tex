@@ -1,7 +1,68 @@
 \chapter{Methodology}
 
-\begin{itemize}
-    \item Literature study
-    \item Security analysis (TARA)
-    \item Test- and benchmark-driven development
-\end{itemize}
+\section{Literature study}
+
+\subsection{Compilation of specifications}
+
+To identify the capabilities and technologies usable for
+implementation.
+
+\subsection{Existing solutions and usage}
+
+To provide examples of what has been done, how it may be used and
+practical notes possibly missed from the specifications.
+
+\subsection{Delimitations (maybe?)}
+
+\section{Development and implementation}
+
+\subsection{Requirements elicitation}
+
+Gather requirements, based on what the company wants to
+accomplish and technical requirements based on specifications.
+
+Functional and non-functional requirements, source from 
+SEP book.
+
+\subsection{Design process}
+
+Documentation and architectural decision records (ADR)
+\cite{adr, adr-github}.
+
+\subsection{Testing}
+
+Primarily for an explorative implementation of the requirements,
+secondarily for remaining reliable.
+
+\subsection{Benchmarking}
+
+For identifying performance differentiations for code changes.
+Tests may be benchmarked to see if it's running fast enough.
+
+Reasons why performance may matter (unverified, find a source):
+SIM and UE communication may require low latency, especially over
+larger networks, considering they are otherwise usually
+physically connected.
+
+Most useful in relation to hot code paths and tight loops.
+
+\subsection{Automated tooling}
+
+Automated testing.
+gtest and gmock (if C++)
+
+Automated benchmarking.
+google microbenchmark (if C++)
+
+\subsection{Delimitations}
+
+The project is an initial implementation at Leissner Data for
+verifying if it is viable to properly develop a product of this
+kind. The intent is a technological exploration and will
+therefore contain limited to no user testing. It will also avoid
+testing graphical user interfaces (if necessary).
+
+\section{Delimitations}
+
+Only SIM cards are considered. No other smart cards will be used
+at this time.
