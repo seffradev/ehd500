@@ -5,10 +5,21 @@
   - [ ] Patch a library if necessary
 - [ ] Flash SimTracer
   - [ ] Explore if ATR and card hot-swapping works as expected
+- [ ] Calculate required data throughput for a set number of SIM
 
 # Meetings
 - Weekly reoccurring meetings with Hanna, Fridays on odd weeks.
 - Weekly reoccurring meetings with Leissner, Fridays on even weeks.
+
+# Random notes
+Actual implementation of APDU forwarding doesn't need any
+awareness of the SIM messages. Only if intended to virtualize or
+mock a SIM, alternatively manipulating and rewriting messages.
+However, PC/SC testing needs APDU-awareness so knowledge is
+relevant there.
+
+Some APDU awareness is useful for forwarding if a UI should
+display SIM identification like IMSI and ICCID.
 
 # Tools and technologies
 - OpenTelemetry
@@ -49,6 +60,16 @@
 - OpenTelemetry (optional)
 - Suggestions for strategy pivots at Leissner (optional, personal)
 
+# Benchmark & testing of PC/SC libraries
+- 3 SIM at once
+- Multiple APDU/RAPDU
+- Languages
+  - C++
+  - Rust
+  - Python
+  - JavaScript
+- Requires reading of smart card specification
+
 # Report disposition
 - First page
 - Abstract and summary
@@ -68,6 +89,7 @@
 - Discussion/analysis
 - Conclusion
 - Appendix
+  - Open source contributions
   - TARA (either appendix or subchapter in report) (deep-dive into cuber security aspects?)
     - Methodology (qualitative?)
   - PC/SC analysis (either appendix or subchapter in report)
