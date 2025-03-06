@@ -1,0 +1,12 @@
+[default]
+
+[default.extend-words]
+UE = "UE"
+ATR = "ATR"
+APDU = "APDU"
+doxygen = "doxygen"
+OpenTelemetry = "OpenTelemetry"
+xmake = "xmake"
+testcontainers = "testcontainers"
+SimTracer = "SimTracer"
+Leissner = "Leissner"

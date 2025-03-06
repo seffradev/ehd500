@@ -14,7 +14,7 @@
 # Random notes
 Actual implementation of APDU forwarding doesn't need any
 awareness of the SIM messages. Only if intended to virtualize or
-mock a SIM, alternatively manipulating and rewriting messages.
+mock an SIM, alternatively manipulating and rewriting messages.
 However, PC/SC testing needs APDU-awareness so knowledge is
 relevant there.
 
@@ -90,9 +90,9 @@ display SIM identification like IMSI and ICCID.
 - Conclusion
 - Appendix
   - Open source contributions
-  - TARA (either appendix or subchapter in report) (deep-dive into cuber security aspects?)
+  - TARA (either appendix or section in report) (deep-dive into cuber security aspects?)
     - Methodology (qualitative?)
-  - PC/SC analysis (either appendix or subchapter in report)
+  - PC/SC analysis (either appendix or section in report)
     - Methodology (quantitative)
   - OpenTelemetry
     - Methodology
