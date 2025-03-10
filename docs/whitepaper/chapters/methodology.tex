@@ -12,17 +12,92 @@ implementation.
 To provide examples of what has been done, how it may be used and
 practical notes possibly missed from the specifications.
 
-\subsection{Delimitations (maybe?)}
+\section{Materials and equipment}
+\label{sec:materials-and-equipment}
 
-\section{Development and implementation}
+This section lists and elaborates on the equipment and material
+used in the implementation.
 
-\subsection{Requirements elicitation}
+\subsection{SIMtrace 2}
+
+The SIMtrace 2 by Osmocom is an open hardware platform with open
+source software \cite{simtrace}. It comes preloaded with SIM
+tracing firmware called \verb|trace| \cite{simtrace-wiki} but
+additional firmware for smart card emulation exists, provided by
+Osmocom. This firmware is called \verb|cardem|
+\cite{simtrace-wiki} and is used for communicating with user
+equipment, sending APDU:s either constructed by software or
+forwarded from a remotely accessed smart card. The hardware is
+capable of tracing and emulating all kinds of ISO 7816
+\cite{iso7816} smart cards when the T=0 protocol is used
+\cite{simtrace-wiki} but the focus is on SIM.
+
+\subsection{Raspberry Pi 4}
+
+Two Raspberry Pi 4 units are used due to the ubiquity and
+portability of the hardware platform. The main computer
+requirements based on the proposed system are two Linux-based
+devices with USB and IP network connectivity capabilities,
+rendering most computer systems a viable choice where the choice
+of Raspberry Pi is due to the small form factor, inexpensive
+hardware and lower power drain, though none of those properties
+are a requirement.
+
+\subsection{Teltonika RUT200 v2.0}
+
+The Teltonika RUT200 v2.0 is used as provisional user equipment
+the SIMtrace 2 hardware running \verb|cardem| connects to, meaning
+the receiver of forwarded APDU:s from a remotely accessed smart
+card. The device provides 2G, 3G and 4G capabilities for mobile
+network connectivity, authenticated to via the remotely accessed
+smart card and has a WiFi and Ethernet interface allowing wired
+and wireless connections and internet access, acting as a gateway
+between the mobile network and the local network.
+
+\subsection{Smart card readers, SIM, server and router}
+
+Generic physical smart card readers are used for enabling access to
+smart cards for the Raspberry Pi which will forward communications
+from the smart card over IP to a destination device, e.g. a server
+or a peer Raspberry Pi connected to a SIMtrace unit and user
+equipment.
+
+A server, virtual or not, is used as a central connectivity hub
+enabling rerouting of SIM-to-UE communication to a either a
+different UE or a different SIM. A basic router will be used to
+provide IP network access for the Raspberry Pi and internet access
+to the aforementioned connectivity hub.
+
+\section{Prototype development}
+\label{sec:prototype-development}
+
+The initial development for explorative purposes is to create a
+prototype \cite[62]{sommerville-software-engineering} \cite[56]{thomas-hunt-pragmatic-programmer} where ideas leading to
+requirements, what to test for in a benchmarking and functionality
+experiment which drives the decisions behind the final
+implementation will be conducted. Requirements elicitation and
+experimentation, described below, will use knowledge acquired in
+the prototyping phase while also themselves provide additional
+information that can sprout new concepts to initially implement in
+the prototype before adding to the final implementation.
+
+\section{Requirements elicitation}
+\label{sec:requirements-elicitation}
 
 Gather requirements, based on what the company wants to
 accomplish and technical requirements based on specifications.
 
 Functional and non-functional requirements, source from 
 SEP book.
+
+\section{Experimentation}
+\label{sec:experimentation}
+
+\section{Implementation}
+\label{sec:implementation}
+
+Test-driven development based on requirements and experience from
+previous parts (prototype, experiment, requirements elicitation).
 
 \subsection{Design process}
 
@@ -62,8 +137,8 @@ format of git commits \cite{git-cliff} called Conventional Commits
 automatic version numbering \cite{git-cliff-bump-version} by
 following the Semantic Versioning (SemVer) specification
 \cite{semver}. If required, additional commit types will be created
-and documented(in ADR:s?) with custom git parsers added to git cliff
-\cite{git-cliff-tips-and-tricks}.
+and documented(in ADR:s?) with custom git parsers added to git
+cliff \cite{git-cliff-tips-and-tricks}.
 
 Automated testing.
 gtest and gmock (if C++)
