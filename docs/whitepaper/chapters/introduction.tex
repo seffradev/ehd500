@@ -11,7 +11,7 @@ greater reach.
 For a user of these technologies and infrastructure, identification
 is required to ascertain the authenticity and capabilities that
 should be provided. This is provided through a Subscriber Identity
-Module (SIM) \cite{sim}, a type of smart card \cite{smart-card},
+Module (SIM) \cite{etsi-ts-131-102}, a type of smart card \cite{etsi-ts-102-221},
 that stores encryption keys and application files utilized to verify
 the subscriber in the telecommunications network. These SIM may have
 varying support when roaming or if a device is 4G- or 5G-enabled.
@@ -52,31 +52,30 @@ fifth chapter conclusions are drawn.
 
 Leissner Data AB is a Swedish telecommunications firm from
 Trollhättan founded in 1969 \cite{leissner-about}. The company
-was not originally in telecomunnications but pivoted to an 
-internet service provider (ISP) role in 1996 with the founding of
+was not originally in telecommunications but pivoted to an 
+Internet Service Provider (ISP) role in 1996 with the founding of
 the sister company Götalandsnätet AB. In 2001 Leissner started
 offering telecommunication systems and has since extended to mobile
 platforms. These mobile platforms are, for example, complete
-virtual mobile core infrastructure such as packet delivery
-gateways (PGW:s), short message service centers (SMSC:s) and home
-subscriber servers (HSS:s) \cite{leissner-mobile-core}.
+virtual mobile core infrastructure such as Packet Delivery Network
+Gateways (PGW:s), Short Message Service Centers (SMSC:s) and Home
+Subscriber Servers (HSS:s) \cite{leissner-mobile-core}.
 
 After a partnership with Hi3G \cite{leissner-about}, Leissner
-became a mobile virtual network enabler (MVNE) and in their
-product catalogue, they sell SIM to the mobile virtual network
-operators (MVNO). Aforementioned SIM is equipped with a digital
-profile compatible with their systems. These digital profiles are
-preset file structures and contents containing information such
-as the international mobile subscriber identifier (IMSI), service
-provider name (SPN) and encryption keys.
+became a Mobile Virtual Network Enabler (MVNE) and in their
+product catalogue, they sell SIM to the Mobile Virtual Network
+Operators (MVNO). The aforementioned SIM:s is equipped with a
+digital profile compatible with their systems. These digital
+profiles are preset file structures and contents containing
+information such as the International Mobile Subscriber Identifier
+(IMSI), Service Provider Name (SPN) and encryption keys.
 
-The digital profile may contain files that can be changed, e.g.
-the SPN or the personal identification number (PIN) as well as
-files that may not be changed, e.g. IMSI and integrated circuit
-card identifier (ICCID). The design of the digital profiles is up
+The digital profile may contain files that can be changed \cite{what-is-a-smart-card-profile}, e.g.
+the SPN or the Personal Identification Number (PIN) as well as
+files that may not be changed, e.g. IMSI and Integrated Circuit
+Card Identifier (ICCID). The design of the digital profiles is up
 to the agreement between SIM supplier and the operator where which
 files should be writeable or not can be decided.
-\cite{Are smart card applications akin to profiles or are they something else?}
 
 Considering the aforementioned, a desire for a simplified test
 platform arose. This test platform would allow hot-swapping of
@@ -98,6 +97,7 @@ smart card reader is requested. This extends to virtual SIM in
 a custom-developed runtime.
 
 \section{Problem formulation}
+\label{sec:problem-formulation}
 
 The intention of this thesis is to implement a couple of technical
 solutions addressing the requests from Leissner Data. The requests
@@ -114,7 +114,7 @@ forwarding functionality by either logging or changing the data.
 Reprogrammability entails generating APDU:s from an alternative
 source than from user equipment being sent directly to the SIM and
 extends requirements to available functionality in a user
-interface.
+interface. This is out of scope for this project.
 
 \subsection{Scalability}
 
@@ -132,7 +132,13 @@ requiring hiding. Connectivity of the SIM bank and the UE to the
 full system must also be handled in a secure way to not allow any
 device to connect and get APDU delivered.
 
-\subsection{Sellable units and services}
+\subsection{Commercialization}
+
+The nature of being able to test mobile core products on different
+SIM profiles is not limited to only the developers of the products
+themselves but also the business customers buying and operating the
+products. Therefore, there is an interest in having a sellable
+service and easily deployed devices a customer can order.
 
 \subsection{Delimitations}
 
@@ -141,6 +147,9 @@ design and time constraints will not be considered in this draft.
 Similarly, the ability to reprogram SIM are out of scope for this
 work as that relates to functionality not directly coupled with
 the forwarding of APDU:s to and from a SIM and UE.
+
+Only SIM will be considered in this implementation, excluding
+general smart cards since the work is aimed at telecommunications.
 
 \section{Previous work}
 
@@ -154,11 +163,16 @@ implementation.
 There are additional solutions in the field of SIM banks with
 similar capabilities to the Osmocom remSIM and the proposed
 solution described in this document. These solutions, however, are
-proprietary \cite{CONTINUE HERE}. 
+proprietary \cite{polygator-sim-bank} complete solutions, usually
+offering a cloud service they own \cite{cloud-sim-bank} not
+enabling the capabilities required for Leissner Data's purposes.
+They may also restrict the communications protocol to the SIM bank
+to a proprietary, undocumented protocol rendering implementation
+difficult.
 
 The existing solutions miss out on some of the requested
 functionality and while they could be extended upon, Leissner Data
-wants to develop their own solution to have full control in their
+aims to develop their own solution to have full control of their
 offering.
 
 \section{Theory}
@@ -173,23 +187,59 @@ Definitions and descriptions of terminology commonly used in this
 report are provided here. A word is explicitly stated if it has
 a specific definition in regards to this document.
 
-\subsection{SIM -- Subscriber Identity Module}
+\subsubsection{User Equipment}
 
-SIM is a type of smart card utilized for the telecommunications sector
-\cite{sim}. Historically it was called SIM during the prime of 2G,
-but a later revision called Universal SIM (USIM) with 3G \cite{usim}
-support surfaced. USIM also enable 4G and 5G support given an
+User Equipment (UE) is what in regular telecommunication contexts
+may be used by a human, e.g. a mobile phone or wireless modems.
+They may also be called mobile equipment or mobile stations.
+
+\subsubsection{Subscriber Identity Module}
+
+A SIM is a type of smart card utilized for the telecommunications sector
+\cite{etsi-ts-131-102}. Historically it was called SIM during the prime of 2G,
+but a later revision called Universal SIM (USIM) with 3G \cite{etsi-ts-131-102}
+support was developed. USIM also enable 4G and 5G support given an
 appropriate digital profile. While USIM may be the correct term, SIM
 will be used in its place, though colloquially mean USIM.
 
-SIM is used to provide authentication capabilities by storing
+A SIM is used to provide authentication capabilities by storing
 encrypted keys and identification files within a telecommunications
-application \cite{sim-application}
+application \cite{etsi-ts-131-102}. The SIM authenticates a
+specific subscriber and their capabilities in a mobile network.
 
-\subsection{Application Protocol Data Units (APDU:s)}
+\subsubsection{Application Protocol Data Unit}
 
-\subsection{SIM provider, SIM bank, SIM box or SIM farm}
+Application Protocol Data Units (APDU:s) are the application-level
+communications protocol, residing on top of the transport layer of
+a smart card and terminal interface \cite{etsi-ts-102-221}. These
+may be file selections in the smart card, file reads, writes or
+some other operation supported by the smart card \cite{etsi-ts-102-221}.
 
-\subsection{SIM consumer}
+\subsubsection{SIM bank, SIM box or SIM farm}
 
-\subsection{Mediator}
+A SIM bank is a device that provides connectivity to multiple SIM
+simultaneously \cite{hyprms-sim-bank}. This may be used for
+connecting to multiple operators or to have different SIM
+configurations from a singular operator. One or more devices may
+connect to the bank and choose which SIM to use, from which the
+devices can act as user equipment.
+
+The terms SIM bank, box and farm all refer to the same thing and
+may be used interchangeably. Different sources use the different
+phrases but SIM bank will be the most common in this paper.
+
+\subsubsection{SIM consumer}
+
+SIM consumer in relation to this work is the device that receives
+forwarded APDU:s from a remote SIM bank. It is also this device
+that is connected to user equipment and therefore forwards the
+received APDU:s to the UE.
+
+\subsubsection{Mediator}
+
+The mediator is in this paper the service that manages connections
+between SIM:s in the SIM bank and ties them to a SIM consumer. It
+manages Answer To Resets (ATR:s) for each SIM so user equipment
+can identify the type of card upon connection establishment.
+Alongside ATR:s, it forwards APDU:s to support tracing and
+manipulation capabilities.
