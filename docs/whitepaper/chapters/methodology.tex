@@ -100,64 +100,97 @@ prototype \cite[62]{sommerville-software-engineering} \cite[56]{thomas-hunt-prag
 where ideas leading to requirements, what to test for in a
 benchmarking and functionality experiment which drives the
 decisions behind the final implementation will be conducted.
-Requirements elicitation and experimentation, described below, will
+Requirements engineering and experimentation, described below, will
 use knowledge acquired in the prototyping phase while also
 themselves provide additional information that can sprout new
 concepts to initially implement in the prototype before adding to
 the final implementation.
 
-\section{Requirements elicitation}
-\label{sec:requirements-elicitation}
+\section{Software requirements engineering}
+\label{sec:software-requirements-engineering}
+
+Requirements elicitation will be used in tandem with the prototype
+development and experimentation to narrow down and define what the
+final product should look like. Specification of requirements will
+use the collected knowledge and experience from prototyping and
+experimentation both in structured natural language \cite[121]{sommerville-software-engineering},
+as well as automated tests where possible \cite{test-cases-as-requirements}.
+Validation will happen in accordance with the following sections
+and change management will be handled by version control management
+(using \verb|git| \cite{git}) and structured documents listing
+stakeholders, what and why, as well as assigning a requirement
+identifier to each requirement. By using \verb|git|, each commit
+can contain relevant information on why a requirement was changed.
 
 \subsection{Compilation of specifications}
 
-To identify the capabilities and technologies usable for
-implementation.
+Aside from the requirements for the software solution, the
+specifications \cite{etsi-ts-102-221, etsi-ts-131-102} 
+themselves pose practical requirements for a functional system.
+Therefore, they are an additional source of non-functional
+requirements. Following the specifications also provide a
+validation angle for the authored requirements.
 
 \subsection{Existing solutions and usage}
 
-To provide examples of what has been done, how it may be used and
-practical notes possibly missed from the specifications.
-
-Gather requirements, based on what the company wants to
-accomplish and technical requirements based on specifications.
-
-Functional and non-functional requirements, source from 
-SEP book.
+Existing solutions such as \cite{osmocom-remsim} provide knowledge
+to compare with regarding how to solve the fundamental functional
+requirements aiding in validation of the system requirements. The
+existing material may also provide additional information not found
+in the specifications, giving a fuller picture of system
+requirements.
 
 \section{Experimentation}
 \label{sec:experimentation}
 
+In tandem with prototyping, experiments testing multiple
+implementations of the PC/SC \cite{pcsc} library in different
+programming languages have been conducted. The experiments are
+to guide technical decisions for what language to use depending on
+which implementation that fulfills requirements for communications
+with smart cards. Four languages were chosen, JavaScript (on
+NodeJS) and Python, to compare two higher-level languages, as well
+as C++ and Rust to compare two lower-level languages.
+
+The experiments test the performance and ability to communicate with
+multiple smart cards at the same time, when transmitting multiple
+APDU:s in quick succession.
+
+Idea: Elaborate on what will be tested and what measurements will
+be taken and why.
+
+Note: This section is a stub and needs additional information.
+
 \section{Implementation}
 \label{sec:implementation}
 
-Test-driven development based on requirements and experience from
-previous parts (prototype, experiment, requirements elicitation).
+As already mentioned in chapter \ref{sec:software-requirements-engineering},
+tests will be used to ensure requirements are being upheld. This
+leads swiftly into a test-driven development approach \cite[242-245]{sommerville-software-engineering}
+while system design will be based around the non-functional
+requirements. The process is iterative as mentioned in the previous
+sections and shown in Fig.~\ref{fig:process-diagram}, where new
+findings in the prototyping or experimentation stages drive changes
+in the main implementation. The implementation step will equally
+drive a need to return to the prototype, experimentation and a change
+of requirements.
 
-\subsection{Design process}
+\begin{figure}[ht]
+    \centering
+	\includegraphics[width=0.5\textwidth]{images/process.mmd.png}
+	\caption{The iterative development process}
+	\label{fig:process-diagram}
+\end{figure}
 
-Documentation and architectural decision records (ADR)
-\cite{adr, adr-github}.
+Throughout development, designs decisions are documented in
+architectural decision records (ADR:s) \cite{adr, adr-github} that
+contain related requirements. Said ADR:s will be structured,
+describing what ideas were considered, which one was chosen and why
+to allow historical transparency in the system design.
 
-\subsection{Testing}
+\section{Threat analysis and risk assessment}
 
-Primarily for an explorative implementation of the requirements,
-secondarily for remaining reliable.
+Idea: Relate this to the security considerations. The TARA should
+guide how to secure the system.
 
-The project is an initial implementation at Leissner Data for
-verifying if it is viable to properly develop a product of this
-kind. The intent is a technological exploration and will
-therefore contain limited to no user testing. It will also avoid
-testing graphical user interfaces (if necessary).
-
-\subsection{Benchmarking}
-
-For identifying performance differentiations for code changes.
-Tests may be benchmarked to see if it's running fast enough.
-
-Reasons why performance may matter (unverified, find a source):
-SIM and UE communication may require low latency, especially over
-larger networks, considering they are otherwise usually
-physically connected.
-
-Most useful in relation to hot code paths and tight loops.
+Note: This section is a stub and needs additional information.

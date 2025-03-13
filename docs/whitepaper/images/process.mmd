@@ -1,0 +1,13 @@
+flowchart TD
+  prototype[Prototyping]
+  experimentation[Experimentation]
+  requirements[Requirements engineering]
+  implementation[Implementation]
+  
+  prototype <--> experimentation
+  prototype <--> requirements
+  experimentation <--> requirements
+  requirements <--> implementation
+
+  implementation --> experimentation
+  implementation --> prototype

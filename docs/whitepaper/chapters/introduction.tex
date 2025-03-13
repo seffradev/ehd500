@@ -70,8 +70,8 @@ profiles are preset file structures and contents containing
 information such as the International Mobile Subscriber Identifier
 (IMSI), Service Provider Name (SPN) and encryption keys.
 
-The digital profile may contain files that can be changed \cite{what-is-a-smart-card-profile}, e.g.
-the SPN or the Personal Identification Number (PIN) as well as
+The digital profile may contain files that can be changed \cite{placeholder-source-for-smart-card-profiles},
+e.g. the SPN or the Personal Identification Number (PIN) as well as
 files that may not be changed, e.g. IMSI and Integrated Circuit
 Card Identifier (ICCID). The design of the digital profiles is up
 to the agreement between SIM supplier and the operator where which
@@ -164,8 +164,8 @@ There are additional solutions in the field of SIM banks with
 similar capabilities to the Osmocom remSIM and the proposed
 solution described in this document. These solutions, however, are
 proprietary \cite{polygator-sim-bank} complete solutions, usually
-offering a cloud service they own \cite{cloud-sim-bank} not
-enabling the capabilities required for Leissner Data's purposes.
+offering a cloud service they own \cite{placeholder-source-cloud-sim-bank}
+not enabling the capabilities required for Leissner Data's purposes.
 They may also restrict the communications protocol to the SIM bank
 to a proprietary, undocumented protocol rendering implementation
 difficult.
@@ -226,7 +226,7 @@ devices can act as user equipment.
 
 The terms SIM bank, box and farm all refer to the same thing and
 may be used interchangeably. Different sources use the different
-phrases but SIM bank will be the most common in this paper.
+phrases but SIM bank will used in this paper.
 
 \subsubsection{SIM consumer}
 
@@ -243,3 +243,51 @@ manages Answer To Resets (ATR:s) for each SIM so user equipment
 can identify the type of card upon connection establishment.
 Alongside ATR:s, it forwards APDU:s to support tracing and
 manipulation capabilities.
+
+\subsection{Requirements engineering}
+
+Requirements engineering is the craft of finding, defining,
+validating and changing requirements for the solution of a problem \cite[111]{sommerville-software-engineering}.
+Requirements grow and change alongside the lifecycle of a project
+and requirements engineering is a formalization of how the process
+works. Requirements can be separated into functional and
+non-functional where functional requirements specify what a system
+should do \cite[105-107]{sommerville-software-engineering} while
+non-functional requirements specify peripheral qualities of the
+system, such as implementation constraints, response time and
+interface design \cite[107-111]{sommerville-software-engineering}.
+
+The first step is elicitation, which includes gathering of
+requirements from stakeholders, establishing the kind of
+requirement, prioritizing and informally documenting said requirement \cite[112-120]{sommerville-software-engineering}.
+Stakeholders \cite[103-104]{sommerville-software-engineering} are
+people with legitimate interest in the system in question,
+accounting for members of the development team, customers,
+operational staff and others that are directly involved or affected
+by the system. 
+
+The second step is specification \cite[120-129]{sommerville-software-engineering}.
+This entails writing formal or more technical specifications with
+additional details relevant to the implementers but not all
+stakeholders. Formalizations may take different appearances, as
+shown in figure 4.11 in \cite[121]{sommerville-software-engineering}
+where natural language, both in unstructured and structured form,
+graphical notations and mathematical models are examples of
+formalizations.
+
+The third step is validation of the requirements \cite[129-130]{sommerville-software-engineering}.
+This means testing the requirements for validity, consistency,
+completeness, realism and verifiability. The step is vital to
+ascertain the requirements are correct in the scope of the problem
+at hand and that a proposed solution fulfilling the requirements also
+solves the problem.
+
+The last step is the change of requirements, specifically management of
+changes \cite[130-134]{sommerville-software-engineering}. Letting
+requirements change is important because new insights, knowledge and
+changes in the surroundings spring up which affect the problem space.
+Key points in managing changes is to provide traceability, which
+entails tracking of relevant stakeholders for a requirement, how the
+requirement has changed and why. The relationships between
+requirements need also be tracked to identify peripheral changes when
+a requirement is updated.
