@@ -6,9 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt update
-      - run: sudo apt install inkscape texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-bibtex-extra biber texlive-lang-european
+      - run: sudo apt install inkscape texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-bibtex-extra biber texlive-lang-european nodejs npm
       - name: Check out repository code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - run: cd ${{ github.workspace }}/docs/whitepaper/mermaid-cli && npm install
       - run: cd ${{ github.workspace }}/docs/whitepaper && ./entrypoint.sh
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1

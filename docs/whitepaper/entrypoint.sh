@@ -2,7 +2,7 @@ set -xe
 
 for image in images/*.mmd
 do
-	node ~/projects/mermaid-cli/src/cli.js -i $image --outputFormat=png --iconPacks "@iconify-json/solar" --width=3200 --height=3200
+	node mermaid-cli/src/cli.js -i $image --outputFormat=png --iconPacks "@iconify-json/solar" --width=3200 --height=3200
 done
 
 pdflatex --shell-escape main
