@@ -1,0 +1,124 @@
+\documentclass[10pt]{beamer}
+\usetheme{Hannover}
+
+\usepackage[english]{babel}
+\usepackage[export]{adjustbox}
+\usepackage{parskip}
+\usepackage{csquotes}
+\usepackage{svg}
+\usepackage[backend=biber, natbib=true, style=numeric, sorting=none]{biblatex}
+
+\addbibresource{references.bib}
+
+\title{An implementation of a remote SIM bank}
+\subtitle{A utility for configuration and distributed coverage testing}
+\author{Hampus Avekvist}
+\institute{University West}
+\date{2025-03-17}
+
+\renewcommand{\familydefault}{\ttdefault}
+\renewcommand{\section}[1]{\frametitle{#1}}
+
+\begin{document}
+    \begin{frame}
+        \includegraphics[width=0.3\textwidth, left]{images/logo-leissner-data.png}
+        \titlepage
+        \includegraphics[width=0.2\textwidth, right]{images/university-west-logo.jpg}
+    \end{frame}
+
+    \begin{frame}
+		\section{Introduction}
+		\pause
+
+		\begin{columns}
+			\begin{column}{0.5\textwidth}
+				\begin{figure}
+					\includegraphics[width=1\textwidth]{images/system-simplified.mmd.png}
+					\caption{Current high level system overview}
+				\end{figure}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\pause
+				Key phrases
+				\begin{description}
+					\pause
+					\item[SIM] Subscriber Identity Module
+					\pause
+					\item SIM bank
+					\pause
+					\item[UE] User equipment
+					\pause
+					\item SIMtrace 2
+					\pause
+					\item Mediator
+				\end{description}
+			\end{column}
+		\end{columns}
+    \end{frame}
+
+    \begin{frame}
+        \section{Goals}
+		\pause
+
+		\begin{columns}
+			\begin{column}{0.5\textwidth}
+				\begin{figure}
+					\includegraphics[width=1\textwidth]{images/system-simplified.mmd.png}
+					\caption{Current high level system overview}
+				\end{figure}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\pause
+				Problem formulations
+				\begin{itemize}
+					\pause
+					\item Functionality
+					\pause
+					\item Scalability
+					\pause
+					\item Security considerations
+					\pause
+					\item Commercialization
+				\end{itemize}
+			\end{column}
+		\end{columns}
+    \end{frame}
+
+    \begin{frame}
+        \section{The development and research process}
+		\begin{figure}
+			\includegraphics[width=0.5\textwidth]{images/process.mmd.png}
+			\caption{The iterative development process}
+		\end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \section{Next up}
+        \begin{itemize}
+			\pause
+            \item Prototype development
+			\pause
+            \item Experiment finalization
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \section{Any questions?}
+
+        \begin{block}{Abbreviations}
+            \begin{description}
+                \item[APDU] Application Protocol Data Unit
+				\item[SIM] Subscriber Identity Module
+				\item[USIM] Universal Subscriber Identity Module
+				\item[TARA] Threat Assessment and Risk Analysis
+            \end{description}
+        \end{block}
+
+        \begin{block}{Further reading}
+            \begin{description}
+                \item[ETSI TS 102 221] Smart Cards; UICC-Terminal interface; Physical and logical characteristics
+				\item[ETSI TS 131 102] Universal Mobile Telecommunications System (UMTS); LTE; 5G; Characteristics of the Universal Subscriber Identity Module (USIM) application
+            \end{description}
+        \end{block}
+    \end{frame}
+\end{document}
