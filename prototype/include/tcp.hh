@@ -6,13 +6,10 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <expected>
-#include <iterator>
 #include <string>
-#include <vector>
 
 #include "data.hh"
 #include "exception.hh"
@@ -21,8 +18,7 @@ EXCEPTION(SocketException);
 
 class TcpSocket {
 public:
-    template <typename T>
-    constexpr auto write(const T &data) {
+    constexpr auto write(const auto &data) {
         auto size = send(peer, data.data(), data.size(), 0);
         if (size < 0) {
             throw SocketException{"could not send message"};
@@ -30,15 +26,11 @@ public:
         return size;
     }
 
-    constexpr auto read() -> Data {
+    template <typename Serialize = GenericData, typename Return = Serialize>
+    constexpr auto read() -> Return {
         auto buffer = std::array<std::byte, max_message_size>{};
-        auto size   = recv(peer, buffer.data(), buffer.size(), 0);
-
-        auto out = std::vector<std::byte>{};
-        out.reserve(size);
-        std::ranges::copy(buffer, std::back_inserter(out));
-
-        return Data{out};
+        auto _      = recv(peer, buffer.data(), buffer.size(), 0);
+        return buffer;
     }
 
     ~TcpSocket() {
@@ -52,11 +44,6 @@ protected:
     int                   peer             = -1;
     sockaddr_in           address;
 };
-
-template <>
-constexpr auto TcpSocket::write<Data>(const Data &data) {
-    return write(data.raw);
-}
 
 class TcpServer : public TcpSocket {
 public:

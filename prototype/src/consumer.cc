@@ -5,7 +5,7 @@
 #include <memory>
 #include <optional>
 #include <print>
-#include <thread>
+#include <stop_token>
 
 #include "atp.hh"
 
@@ -114,12 +114,21 @@ int main(int, char *[]) {
 
     auto client = TcpClient{"127.0.0.1", 9000};
 
-    auto read = std::jthread{[&client] {
-        auto message = static_cast<Atp>(client.read());
-        std::println("{}", message);
-    }};
+    auto stop_source = std::stop_source{};
 
-    client.write("hello"s);
+    while (!stop_source.stop_requested()) {
+        auto message = client.read<Atp>();
+
+        if (message.length <= 0 && stop_source.stop_possible()) {
+            std::println("Received empty message, stopping");
+            stop_source.request_stop();
+            continue;
+        }
+
+        std::println("Receiving {}", message);
+        std::println("Sending {}", message);
+        client.write<GenericData>(message);
+    }
 
     return 0;
 }
