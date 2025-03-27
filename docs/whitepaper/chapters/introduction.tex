@@ -50,11 +50,11 @@ fifth chapter conclusions are drawn.
 
 \section{Background}
 
-Leissner Data AB is a Swedish telecommunications firm from
-Trollhättan founded in 1969 \cite{leissner-about}. The company
-was not originally in telecommunications but pivoted to an 
-Internet Service Provider (ISP) role in 1996 with the founding of
-the sister company Götalandsnätet AB. In 2001 Leissner started
+Leissner Data AB (henceforth referred to as Leissner) is a Swedish
+telecommunications firm from Trollhättan founded in 1969 \cite{leissner-about}.
+The company was not originally in telecommunications but pivoted to
+an Internet Service Provider (ISP) role in 1996 with the founding
+of the sister company Götalandsnätet AB. In 2001 Leissner started
 offering telecommunication systems and has since extended to mobile
 platforms. These mobile platforms are, for example, complete
 virtual mobile core infrastructure such as Packet Delivery Network
@@ -100,8 +100,8 @@ a custom-developed runtime.
 \label{sec:problem-formulation}
 
 The intention of this thesis is to implement a couple of technical
-solutions addressing the requests from Leissner Data. The requests
-can be dissolved into the following sections.
+solutions addressing the requests from Leissner. The requests can
+be dissolved into the following sections.
 
 \subsection{Functionality}
 
@@ -151,6 +151,9 @@ the forwarding of APDU:s to and from a SIM and UE.
 Only SIM will be considered in this implementation, excluding
 general smart cards since the work is aimed at telecommunications.
 
+While security considerations are accounted for, safety risks are
+not included in this report.
+
 \section{Previous work}
 
 The primary inspiration and function description for this project
@@ -165,15 +168,18 @@ similar capabilities to the Osmocom remSIM and the proposed
 solution described in this document. These solutions, however, are
 proprietary \cite{polygator-sim-bank} complete solutions, usually
 offering a cloud service they own \cite{placeholder-source-cloud-sim-bank}
-not enabling the capabilities required for Leissner Data's purposes.
+not enabling the capabilities required for Leissner's purposes.
 They may also restrict the communications protocol to the SIM bank
 to a proprietary, undocumented protocol rendering implementation
 difficult.
 
 The existing solutions miss out on some of the requested
-functionality and while they could be extended upon, Leissner Data
-aims to develop their own solution to have full control of their
-offering.
+functionality and while they could be extended upon, Leissner aims
+to develop their own solution to have full control of their
+offering. This is due to the proprietary nature of some of the
+solutions, but also licensing issues with the Osmocom remSIM
+solution, having a GPL-2.0 license while Leissner does not want to
+distribute the source code for their products.
 
 \section{Theory}
 
@@ -187,13 +193,13 @@ Definitions and descriptions of terminology commonly used in this
 report are provided here. A word is explicitly stated if it has
 a specific definition in regards to this document.
 
-\subsubsection{User Equipment}
+\paragraph{User Equipment}
 
 User Equipment (UE) is what in regular telecommunication contexts
 may be used by a human, e.g. a mobile phone or wireless modems.
 They may also be called mobile equipment or mobile stations.
 
-\subsubsection{Subscriber Identity Module}
+\paragraph{Subscriber Identity Module}
 
 A SIM is a type of smart card utilized for the telecommunications sector
 \cite{etsi-ts-131-102}. Historically it was called SIM during the prime of 2G,
@@ -207,7 +213,7 @@ encrypted keys and identification files within a telecommunications
 application \cite{etsi-ts-131-102}. The SIM authenticates a
 specific subscriber and their capabilities in a mobile network.
 
-\subsubsection{Application Protocol Data Unit}
+\paragraph{Application Protocol Data Unit}
 
 Application Protocol Data Units (APDU:s) are the application-level
 communications protocol, residing on top of the transport layer of
@@ -215,7 +221,7 @@ a smart card and terminal interface \cite{etsi-ts-102-221}. These
 may be file selections in the smart card, file reads, writes or
 some other operation supported by the smart card \cite{etsi-ts-102-221}.
 
-\subsubsection{SIM bank, SIM box or SIM farm}
+\paragraph{SIM bank, SIM box or SIM farm}
 
 A SIM bank is a device that provides connectivity to multiple SIM
 simultaneously \cite{hyprms-sim-bank}. This may be used for
@@ -228,14 +234,14 @@ The terms SIM bank, box and farm all refer to the same thing and
 may be used interchangeably. Different sources use the different
 phrases but SIM bank will used in this paper.
 
-\subsubsection{SIM consumer}
+\paragraph{SIM consumer}
 
 SIM consumer in relation to this work is the device that receives
 forwarded APDU:s from a remote SIM bank. It is also this device
 that is connected to user equipment and therefore forwards the
 received APDU:s to the UE.
 
-\subsubsection{Mediator}
+\paragraph{Mediator}
 
 The mediator is in this paper the service that manages connections
 between SIM:s in the SIM bank and ties them to a SIM consumer. It

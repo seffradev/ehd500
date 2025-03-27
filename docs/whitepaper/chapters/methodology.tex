@@ -7,7 +7,15 @@ to derive a solution to the problem statements in chapter~\ref{sec:problem-formu
 \label{sec:materials-and-equipment}
 
 This section lists the equipment, material and tools used in the
-implementation.
+implementation. Fig.~\ref{fig:simplified-system-diagram} shows how
+the majority of the physical components are connected.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{images/system-simplified.mmd.png}
+	\caption{Overview of the intended system diagram}
+	\label{fig:simplified-system-diagram}
+\end{figure}
 
 \subsection{SIMtrace 2}
 
@@ -95,16 +103,64 @@ automated.
 \section{Prototype development}
 \label{sec:prototype-development}
 
-The initial development for explorative purposes is to create a
+The initial development is for explorative purposes, to create a
 prototype \cite[62]{sommerville-software-engineering} \cite[56]{thomas-hunt-pragmatic-programmer}
-where ideas leading to requirements, what to test for in a
-benchmarking and functionality experiment which drives the
-decisions behind the final implementation will be conducted.
-Requirements engineering and experimentation, described below, will
-use knowledge acquired in the prototyping phase while also
-themselves provide additional information that can sprout new
-concepts to initially implement in the prototype before adding to
-the final implementation.
+where ideas lead to requirements, what to test for in the
+benchmarking and functionality experiment listed in section~\ref{sec:experimentation}
+which alongside the TARA explained in section~\ref{sec:tara} drives
+the decisions behind the final implementation. Requirements
+engineering and experimentation, elaborated on below, will use
+knowledge acquired in the prototyping phase while also themselves
+provide additional information that can sprout new concepts to
+initially implement in the prototype before adding to the final
+implementation.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/prototype.mmd.png}
+	\caption{Prototype system overview}
+	\label{fig:prototype-diagram}
+\end{figure}
+
+The prototype, as shown in Fig.~\ref{fig:prototype-diagram}, only
+requires the functionality for communication between the two
+Raspberry Pi:s used, while being restricted to only a singular SIM
+and singular UE. The communication protocol between the two
+computers is a simple insecure protocol on top of TCP instead of
+anything that may be proposed in the TARA. The security
+considerations are not as important in the lab environment the
+prototype is developed within and has no customer-sensitive
+information, allowing an insecure communications protocol.
+
+\section{Experimentation}
+\label{sec:experimentation}
+
+In tandem with prototyping, experiments testing multiple
+implementations of the PC/SC \cite{pcsc} library in different
+programming languages have been conducted. The experiments are
+to guide technical decisions for what language to use depending on
+which implementation that fulfills requirements for communications
+with smart cards. Four languages were chosen, JavaScript (on
+NodeJS) and Python, to compare two higher-level languages, as well
+as C++ and Rust to compare two lower-level languages.
+
+The experiments test the performance and ability to communicate with
+multiple smart cards at the same time, when transmitting multiple
+APDU:s in quick succession.
+
+Idea: Elaborate on what will be tested and what measurements will
+be taken and why.
+
+Note: This section is a stub and needs additional information.
+
+\section{Threat analysis and risk assessment}
+\label{sec:tara}
+
+The threat analysis and risk assessment (TARA) \cite{tara} directly
+responds to the security considerations in section~\ref{sec:problem-formulation}
+by, alongside STRIDE \cite{stride}, providing an analytical
+framework to identify and classify security risks. The TARA is
+conducted on the intended system overview shown in Fig.~\ref{fig:simplified-system-diagram}.
 
 \section{Software requirements engineering}
 \label{sec:software-requirements-engineering}
@@ -140,27 +196,6 @@ existing material may also provide additional information not found
 in the specifications, giving a fuller picture of system
 requirements.
 
-\section{Experimentation}
-\label{sec:experimentation}
-
-In tandem with prototyping, experiments testing multiple
-implementations of the PC/SC \cite{pcsc} library in different
-programming languages have been conducted. The experiments are
-to guide technical decisions for what language to use depending on
-which implementation that fulfills requirements for communications
-with smart cards. Four languages were chosen, JavaScript (on
-NodeJS) and Python, to compare two higher-level languages, as well
-as C++ and Rust to compare two lower-level languages.
-
-The experiments test the performance and ability to communicate with
-multiple smart cards at the same time, when transmitting multiple
-APDU:s in quick succession.
-
-Idea: Elaborate on what will be tested and what measurements will
-be taken and why.
-
-Note: This section is a stub and needs additional information.
-
 \section{Implementation}
 \label{sec:implementation}
 
@@ -178,7 +213,7 @@ of requirements.
 \begin{figure}[ht]
     \centering
 	\includegraphics[width=0.5\textwidth]{images/process.mmd.png}
-	\caption{The iterative development process}
+	\caption{The iterative development process. The dashed lines implies an optional order of execution}
 	\label{fig:process-diagram}
 \end{figure}
 
@@ -187,10 +222,3 @@ architectural decision records (ADR:s) \cite{adr, adr-github} that
 contain related requirements. Said ADR:s will be structured,
 describing what ideas were considered, which one was chosen and why
 to allow historical transparency in the system design.
-
-\section{Threat analysis and risk assessment}
-
-Idea: Relate this to the security considerations. The TARA should
-guide how to secure the system.
-
-Note: This section is a stub and needs additional information.
