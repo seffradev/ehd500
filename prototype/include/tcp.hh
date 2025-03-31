@@ -9,6 +9,8 @@
 #include <array>
 #include <cstdint>
 #include <expected>
+#include <ostream>
+#include <ranges>
 #include <string>
 
 #include "data.hh"
@@ -18,7 +20,7 @@ EXCEPTION(SocketException);
 
 class TcpSocket {
 public:
-    constexpr auto write(const auto &data) {
+    constexpr auto write(const std::ranges::forward_range auto &data) {
         auto size = send(peer, data.data(), data.size(), 0);
         if (size < 0) {
             throw SocketException{"could not send message"};
@@ -28,7 +30,7 @@ public:
 
     template <typename Serialize = GenericData, typename Return = Serialize>
     constexpr auto read() -> Return {
-        auto buffer = std::array<std::byte, max_message_size>{};
+        auto buffer = std::array<std::byte, maxMessageSize>{};
         auto _      = recv(peer, buffer.data(), buffer.size(), 0);
         return buffer;
     }
@@ -40,8 +42,8 @@ public:
     }
 
 protected:
-    static constexpr auto max_message_size = 1024;
-    int                   peer             = -1;
+    static constexpr auto maxMessageSize = 1024;
+    int                   peer           = -1;
     sockaddr_in           address;
 };
 

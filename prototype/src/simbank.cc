@@ -16,11 +16,15 @@ using namespace std::literals;
 
 struct Exit {};
 
-struct ReaderStateChange {
+struct CardRemoved {
     std::string readerName;
 };
 
-using InternalMessage = std::variant<ReaderStateChange, Exit>;
+struct CardInserted {
+    std::string readerName;
+};
+
+using InternalMessage = std::variant<CardInserted, CardRemoved, Exit>;
 
 template <class... Ts>
 struct Overloads : Ts... {
@@ -42,6 +46,7 @@ auto handleReaders(Queue& queue, Cards& cards, std::stop_token token) {
         if (!reader.isCardInserted()) {
             std::println("Removing card from reader {}", reader.name);
             cards.erase(reader.name);
+            queue.emplace(CardRemoved{reader.name});
         }
     }
 
@@ -51,14 +56,14 @@ auto handleReaders(Queue& queue, Cards& cards, std::stop_token token) {
             std::println("Card inserted into reader {}", reader.name);
             try {
                 cards[reader.name] = reader.connectToCard();
-                queue.emplace(ReaderStateChange{reader.name});
+                queue.emplace(CardInserted{reader.name});
             } catch (...) {
-                std::println(stderr, "Could not connect to card in reader {}", reader.name);
+                std::println(std::cerr, "Could not connect to card in reader {}", reader.name);
             }
         }
     }
 
-    std::this_thread::yield();
+    std::this_thread::sleep_for(100ms);
 }
 
 auto handleReceive(TcpServer& server, Queue& queue, std::stop_token token) {
@@ -67,25 +72,36 @@ auto handleReceive(TcpServer& server, Queue& queue, std::stop_token token) {
     }
 
     auto message = server.read<Atp>();
+    std::println("Received {}", message);
+
     if (message.length <= 0) {
         queue.emplace(Exit{});
         return;
     }
 
-    std::println("Received {}", message);
-
     std::this_thread::yield();
 }
 
-auto handleReaderStateChange(TcpServer& server, Cards& cards, ReaderStateChange state) {
-    auto atp = Atp{
+auto handleCardInserted(TcpServer& server, Cards& cards, CardInserted state) {
+    auto message = Atp{
         1,
         Type::Atr,
         GenericData{cards[state.readerName]->atr()},
     };
 
-    std::println("{}", atp);
-    server.write<GenericData>(atp);
+    server.write<GenericData>(message);
+    std::println("Transmitted {}", message);
+}
+
+auto handleCardRemoved(TcpServer& server) {
+    auto message = Atp{
+        1,
+        Type::UnsetCard,
+        GenericData{std::vector<std::byte>{}},
+    };
+
+    server.write<GenericData>(message);
+    std::println("Transmitted {}", message);
 }
 
 auto handleExit(std::stop_source& stop_source) {
@@ -103,7 +119,8 @@ auto handleQueue(TcpServer& server, Queue& queue, Cards& cards, std::stop_source
     auto element = queue.front();
     queue.pop();
 
-    std::visit(Overloads{[&server, &cards](ReaderStateChange state) { handleReaderStateChange(server, cards, state); },
+    std::visit(Overloads{[&server, &cards](CardInserted state) { handleCardInserted(server, cards, state); },
+                         [&server](CardRemoved) { handleCardRemoved(server); },
                          [&stop_source](Exit) { handleExit(stop_source); }},
                element);
 }
@@ -132,12 +149,19 @@ int main(int, char*[]) {
         handleQueue(server, queue, cards, stop_source);
     }
 
-    // Make-shift "exit" signal to peer
-    server.write<GenericData>(Atp{
-        0,
-        Type::Apdu,
-        std::vector<std::byte>{},
-    });
+    try {
+        // Make-shift "exit" signal to peer
+        auto message = Atp{
+            0,
+            Type::Apdu,
+            std::vector<std::byte>{},
+        };
+
+        server.write<GenericData>(message);
+        std::println("Transmitted {}", message);
+    } catch (const std::exception& e) {
+        std::println(std::cerr, "failed to send bye, cause: {}", e.what());
+    }
 
     return 0;
 }

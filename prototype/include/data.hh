@@ -2,9 +2,17 @@
 #define DATA_HH
 
 #include <algorithm>
+#include <format>
 #include <iterator>
 #include <ranges>
 #include <vector>
+
+auto hexString(std::ranges::forward_range auto& stream) {
+    using namespace std::literals;
+    return std::ranges::fold_left(
+        stream | std::views::transform([](auto byte) { return std::format("{:#04x} ", static_cast<int>(byte)); }), ""s,
+        std::plus<std::string>());
+}
 
 template <typename T>
 concept ResizableRange = std::ranges::sized_range<T> && requires(T t) { t.reserve(size_t{1}); };
@@ -48,14 +56,21 @@ public:
         return materialize<T>(raw | std::views::transform([](std::byte b) { return static_cast<T::value_type>(b); }));
     }
 
-    auto&       operator[](size_t index) noexcept { return raw[index]; }
+    auto& operator[](size_t index) noexcept { return raw[index]; }
+
     const auto& operator[](size_t index) const noexcept { return raw[index]; }
-    auto&       at(size_t index) { return raw.at(index); }
+
+    auto& at(size_t index) { return raw.at(index); }
+
     const auto& at(size_t index) const { return raw.at(index); }
-    auto        data() const noexcept { return raw.data(); }
-    auto        size() const noexcept { return raw.size(); }
-    auto        begin() const noexcept { return raw.begin(); }
-    auto        end() const noexcept { return raw.end(); }
+
+    auto data() const noexcept { return raw.data(); }
+
+    auto size() const noexcept { return raw.size(); }
+
+    auto begin() const noexcept { return raw.begin(); }
+
+    auto end() const noexcept { return raw.end(); }
 
 private:
     std::vector<std::byte> raw;
