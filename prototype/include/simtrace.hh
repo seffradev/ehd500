@@ -5,12 +5,15 @@
 
 #include <cassert>
 #include <cstdint>
+#include <expected>
 #include <filesystem>
+#include <format>
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <print>
 #include <source_location>
+#include <string_view>
 #include <type_traits>
 
 extern "C" {
@@ -37,13 +40,9 @@ EXCEPTION(GsmTapException);
 
 class SimTrace2 {
 public:
-    constexpr SimTrace2() {
-        transport = std::make_unique<osmo_st2_transport>();
-        slot      = std::make_unique<osmo_st2_slot>(transport.get(), 0);
-        instance  = std::make_unique<osmo_st2_cardem_inst>(slot.get(), &osim_uicc_sim_cic_profile);
-    }
+    static constexpr auto create() -> std::expected<SimTrace2, SimTraceError> {
+        auto trace = SimTrace2{};
 
-    constexpr auto connect() {
         auto result_code = osmo_libusb_init(nullptr);
         if (result_code < 0) {
             throw UsbException{"libusb initialization failed"};
@@ -62,27 +61,50 @@ public:
         interface_match->interface     = interface;
         interface_match->altsetting    = altsetting;
 
-        transport->udp_fd    = udpFd.value_or(-1);
-        transport->usb_async = usbAsync;
-        transport->usb_devh  = osmo_libusb_open_claim_interface(nullptr, nullptr, interface_match.get());
-        if (!transport->usb_devh) {
+        trace.transport->udp_fd    = udpFd.value_or(-1);
+        trace.transport->usb_async = usbAsync;
+        trace.transport->usb_devh  = osmo_libusb_open_claim_interface(nullptr, nullptr, interface_match.get());
+        if (!trace.transport->usb_devh) {
             throw UsbException{"can't open USB device"};
         }
 
-        result_code = libusb_claim_interface(transport->usb_devh, interface);
+        result_code = libusb_claim_interface(trace.transport->usb_devh, interface);
         if (result_code < 0) {
             throw UsbException{"can't claim interface"};
         }
 
-        result_code = osmo_libusb_get_ep_addrs(transport->usb_devh, interface, &transport->usb_ep.out,
-                                               &transport->usb_ep.in, &transport->usb_ep.irq_in);
+        result_code = osmo_libusb_get_ep_addrs(trace.transport->usb_devh, interface, &trace.transport->usb_ep.out,
+                                               &trace.transport->usb_ep.in, &trace.transport->usb_ep.irq_in);
         if (result_code < 0) {
             throw UsbException{"can't obtain EP address interface"};
         }
 
-        allocateAndSubmit();
+        trace.allocateAndSubmit();
 
-        osmo_st2_cardem_request_config(instance.get(), CEMU_FEAT_F_STATUS_IRQ);
+        osmo_st2_cardem_request_config(trace.instance.get(), CEMU_FEAT_F_STATUS_IRQ);
+
+        return trace;
+    }
+
+    constexpr SimTrace2(SimTrace2 &&trace) {
+        std::swap(instance, trace.instance);
+        std::swap(slot, trace.slot);
+        std::swap(transport, trace.transport);
+        std::swap(hasCard, trace.hasCard);
+        std::swap(lastStatusFlags, trace.lastStatusFlags);
+        trace.moved = true;
+        moved       = false;
+    }
+
+    constexpr SimTrace2 &operator=(SimTrace2 &&trace) {
+        std::swap(instance, trace.instance);
+        std::swap(slot, trace.slot);
+        std::swap(transport, trace.transport);
+        std::swap(hasCard, trace.hasCard);
+        std::swap(lastStatusFlags, trace.lastStatusFlags);
+        trace.moved = true;
+        moved       = false;
+        return *this;
     }
 
     constexpr auto run() {
@@ -104,9 +126,14 @@ public:
     constexpr auto unsetCard() {
         hasCard = false;
         osmo_st2_cardem_request_card_insert(instance.get(), false);
+        osmo_st2_modem_sim_select_local(instance->slot);
     }
 
     constexpr ~SimTrace2() {
+        if (moved) {
+            return;
+        }
+
         libusb_release_interface(transport->usb_devh, 0);
 
         if (transport->usb_devh) {
@@ -118,46 +145,51 @@ public:
     }
 
 private:
+    constexpr SimTrace2()
+        : transport(std::make_unique<osmo_st2_transport>()),
+          slot(std::make_unique<osmo_st2_slot>(transport.get(), 0)),
+          instance(std::make_unique<osmo_st2_cardem_inst>(slot.get(), &osim_uicc_sim_cic_profile)) {}
+
     static void updateStatusFlags(SimTrace2 &trace, uint32_t flags) {
-        struct osim_card_hdl *card  = trace.instance->chan->card;
-        int                   reset = noReset;
+        auto card  = trace.instance->chan->card;
+        auto reset = std::optional<Reset>{std::nullopt};
 
         if ((flags & CEMU_STATUS_F_VCC_PRESENT) && (flags & CEMU_STATUS_F_CLK_ACTIVE) &&
             !(flags & CEMU_STATUS_F_RESET_ACTIVE)) {
             if (trace.lastStatusFlags & CEMU_STATUS_F_RESET_ACTIVE) {
                 if (trace.lastStatusFlags & CEMU_STATUS_F_VCC_PRESENT)
-                    reset = warmReset;
+                    reset = Reset::Warm;
                 else
-                    reset = coldReset;
+                    reset = Reset::Cold;
             } else if (!(trace.lastStatusFlags & CEMU_STATUS_F_VCC_PRESENT)) {
-                /* power-up has just happened, perform cold reset */
-                reset = coldReset;
+                reset = Reset::Cold;
             }
         } else if (flags == CEMU_STATUS_F_VCC_PRESENT && !(trace.lastStatusFlags & CEMU_STATUS_F_VCC_PRESENT)) {
-            reset = coldReset;
+            reset = Reset::Cold;
         }
 
         if (reset) {
-            std::println("{} Resetting card in reader...", reset == coldReset ? "Cold" : "Warm");
-            osim_card_reset(card, reset == coldReset ? true : false);
+            std::println("{} Resetting card in reader...", toString(*reset));
+            osim_card_reset(card, reset == Reset::Cold ? true : false);
             osmo_st2_gsmtap_send_apdu(GSMTAP_SIM_ATR, card->atr, card->atr_len);
         }
 
         trace.lastStatusFlags = flags;
     }
 
-    static auto cemuStatusFlagsToString(char *out, unsigned int out_len, uint32_t flags) {
-        snprintf(out, out_len, "%s%s%s%s%s", flags & CEMU_STATUS_F_RESET_ACTIVE ? "RESET " : "",
-                 flags & CEMU_STATUS_F_VCC_PRESENT ? "VCC " : "", flags & CEMU_STATUS_F_CLK_ACTIVE ? "CLK " : "",
-                 flags & CEMU_STATUS_F_CARD_INSERT ? "CARD_PRES " : "",
-                 flags & CEMU_STATUS_F_RCEMU_ACTIVE ? "RCEMU " : "");
+    static auto cemuStatusFlagsToString(uint32_t flags) {
+        auto reset    = (flags & CEMU_STATUS_F_RESET_ACTIVE) ? "RESET " : "";
+        auto vcc      = (flags & CEMU_STATUS_F_VCC_PRESENT) ? "VCC " : "";
+        auto clk      = (flags & CEMU_STATUS_F_CLK_ACTIVE) ? "CLK " : "";
+        auto cardPres = (flags & CEMU_STATUS_F_CARD_INSERT) ? "CARD_PRES " : "";
+        auto rcemu    = (flags & CEMU_STATUS_F_RCEMU_ACTIVE) ? "RCEMU " : "";
+        return std::format("{}{}{}{}{}", reset, vcc, clk, cardPres, rcemu);
     }
 
     static auto processIrqStatus(SimTrace2 &trace, const uint8_t *buffer, int /* length */) {
-        const struct cardemu_usb_msg_status *status = (struct cardemu_usb_msg_status *)buffer;
-        char                                 flagsBuffer[80];
+        const cardemu_usb_msg_status *status = reinterpret_cast<const cardemu_usb_msg_status *>(buffer);
 
-        cemuStatusFlagsToString(flagsBuffer, sizeof(flagsBuffer), status->flags);
+        auto flagsBuffer = cemuStatusFlagsToString(status->flags);
 
         std::println(std::cerr, "=> IRQ STATUS: flags: {:#04x}, fi: {}, di: {}, wi: {}, wtime: {} ({})", status->flags,
                      status->fi, status->di, status->wi, status->waiting_time, flagsBuffer);
@@ -228,19 +260,18 @@ private:
         assert(libusb_submit_transfer(transfer) == 0);
     }
 
-    static const char *cemuDataFlagsToString(uint32_t flags) {
-        static char out[64];
-        snprintf(out, sizeof(out), "%s%s%s%s", flags & CEMU_DATA_F_TPDU_HDR ? "HDR " : "",
-                 flags & CEMU_DATA_F_FINAL ? "FINAL " : "", flags & CEMU_DATA_F_PB_AND_TX ? "PB_AND_TX " : "",
-                 flags & CEMU_DATA_F_PB_AND_RX ? "PB_AND_RX" : "");
-        return out;
+    static auto cemuDataFlagsToString(uint32_t flags) {
+        auto header   = (flags & CEMU_DATA_F_TPDU_HDR) ? "HDR " : "";
+        auto final    = (flags & CEMU_DATA_F_FINAL) ? "FINAL " : "";
+        auto transfer = (flags & CEMU_DATA_F_PB_AND_TX) ? "PB_AND_TX " : "";
+        auto receive  = (flags & CEMU_DATA_F_PB_AND_RX) ? "PB_AND_RX" : "";
+        return std::format("{}{}{}{}", header, final, transfer, receive);
     }
 
     static int processDoStatus(SimTrace2 &trace, uint8_t *buffer, int /* length */) {
         struct cardemu_usb_msg_status *status = (struct cardemu_usb_msg_status *)buffer;
-        char                           flagsBuffer[80];
 
-        cemuStatusFlagsToString(flagsBuffer, sizeof(flagsBuffer), status->flags);
+        auto flagsBuffer = cemuStatusFlagsToString(status->flags);
 
         std::println("=> STATUS: flags: {:#04x}, fi: {}, di: {}, wi: {}, wtime: {} ({})",
                      static_cast<uint32_t>(status->flags), status->fi, status->di, status->wi,
@@ -394,15 +425,30 @@ private:
     static constexpr std::optional<std::filesystem::path> path          = std::nullopt;
     static constexpr std::optional<uint16_t>              udpFd         = std::nullopt;
     static constexpr bool                                 usbAsync      = true;
-    static constexpr auto                                 noReset       = 0;
-    static constexpr auto                                 coldReset     = 1;
-    static constexpr auto                                 warmReset     = 2;
 
-    std::unique_ptr<osmo_st2_cardem_inst> instance;
-    std::unique_ptr<osmo_st2_slot>        slot;
+    enum struct Reset {
+        Cold,
+        Warm,
+    };
+
+    static auto toString(Reset reset) -> std::string_view {
+        using namespace std::literals;
+        switch (reset) {
+            case Reset::Cold:
+                return "Cold"sv;
+            case Reset::Warm:
+                return "Warm"sv;
+        }
+
+        return "Unreachable"sv;
+    }
+
     std::unique_ptr<osmo_st2_transport>   transport;
+    std::unique_ptr<osmo_st2_slot>        slot;
+    std::unique_ptr<osmo_st2_cardem_inst> instance;
     uint32_t                              lastStatusFlags = 0;
     bool                                  hasCard         = false;
+    bool                                  moved           = false;
 };
 
 #endif

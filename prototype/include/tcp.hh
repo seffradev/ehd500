@@ -7,11 +7,14 @@
 #include <unistd.h>
 
 #include <array>
+#include <cerrno>
 #include <cstdint>
 #include <expected>
-#include <ostream>
+#include <print>
 #include <ranges>
+#include <source_location>
 #include <string>
+#include <system_error>
 
 #include "data.hh"
 #include "exception.hh"
@@ -20,18 +23,55 @@ EXCEPTION(SocketException);
 
 class TcpSocket {
 public:
-    constexpr auto write(const std::ranges::forward_range auto &data) {
-        auto size = send(peer, data.data(), data.size(), 0);
+    constexpr auto write(const std::ranges::forward_range auto &data) -> std::expected<size_t, SystemError> {
+        std::println("{}: {}", std::source_location::current().function_name(), hexString(data));
+        auto size = static_cast<size_t>(send(peer, data.data(), data.size(), 0));
         if (size < 0) {
-            throw SocketException{"could not send message"};
+            auto error = SystemError{std::errc{errno}};
+
+            if (error.isSocketError()) {
+                close(peer);
+                peer = -1;
+            }
+
+            return std::unexpected{error};
         }
         return size;
     }
 
-    template <typename Serialize = GenericData, typename Return = Serialize>
-    constexpr auto read() -> Return {
-        auto buffer = std::array<std::byte, maxMessageSize>{};
-        auto _      = recv(peer, buffer.data(), buffer.size(), 0);
+    template <typename Serialize = GenericData, size_t size = 1024, typename Return = Serialize,
+              typename Error = SystemError, typename Result = std::expected<Serialize, Error>>
+    constexpr auto read() -> Result {
+        auto buffer = std::array<std::byte, size>{};
+        if (recv(peer, buffer.data(), size, 0) < 0) {
+            auto error = SystemError{std::errc{errno}};
+
+            if (error.isSocketError()) {
+                close(peer);
+                peer = -1;
+            }
+
+            return std::unexpected{error};
+        }
+        std::println("{}: {}", std::source_location::current().function_name(), hexString(buffer));
+        return buffer;
+    }
+
+    template <typename Serialize = GenericData, typename Return = Serialize, typename Error = SystemError,
+              typename Result = std::expected<Serialize, Error>>
+    constexpr auto read(size_t size) -> Result {
+        auto buffer = std::vector<std::byte>(size);
+        if (recv(peer, buffer.data(), size, 0) < 0) {
+            auto error = SystemError{std::errc{errno}};
+
+            if (error.isSocketError()) {
+                close(peer);
+                peer = -1;
+            }
+
+            return std::unexpected{error};
+        }
+        std::println("{}: {}", std::source_location::current().function_name(), hexString(buffer));
         return buffer;
     }
 
@@ -42,9 +82,8 @@ public:
     }
 
 protected:
-    static constexpr auto maxMessageSize = 1024;
-    int                   peer           = -1;
-    sockaddr_in           address;
+    int         peer = -1;
+    sockaddr_in address;
 };
 
 class TcpServer : public TcpSocket {
