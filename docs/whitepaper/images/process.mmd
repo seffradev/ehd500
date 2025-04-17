@@ -1,13 +1,10 @@
 flowchart TD
   prototype[Prototyping]
-  experimentation[Experimentation]
   requirements[Requirements engineering]
-  tara[Threat analysis and risk assessment]
+  tara[Threat assessment and remediation analysis]
   implementation[Implementation]
   
   prototype <--> requirements
-  prototype .-> experimentation
-  experimentation <--> requirements
-  experimentation .-> tara
+  prototype .-> tara
   tara <--> requirements
   requirements <--> implementation

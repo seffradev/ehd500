@@ -1,1 +1,54 @@
 \chapter{Conclusions}
+
+\section{Future work}
+
+\subsection{Experimentation}
+\label{sec:experimentation}
+
+In tandem with prototyping, experiments testing multiple
+implementations of the PC/SC \cite{pcsc} library in different
+programming languages have been conducted. The experiments are to
+guide technical decisions for what language to use depending on
+which implementation that fulfills requirements for communications
+with smart cards. Four languages were chosen, JavaScript (on
+NodeJS) and Python, to compare two higher-level languages, as well
+as C++ and Rust to compare two lower-level languages.
+
+The experiments test the performance and ability to communicate
+with multiple smart cards at the same time, when transmitting
+multiple APDU:s in quick succession.
+
+Idea: Elaborate on what will be tested and what measurements will
+be taken and why.
+
+Note: This section is a stub and needs additional information.
+
+\subsection{Implementation}
+\label{sec:implementation}
+
+As already mentioned in chapter
+\ref{sec:software-requirements-engineering}, tests will be used to
+ensure requirements are being upheld. This leads swiftly into a
+test-driven development approach
+\cite[242-245]{sommerville-software-engineering} while system
+design will be based around the non-functional requirements. The
+process is iterative as mentioned in the previous sections and
+shown in Fig.~\ref{fig:process-diagram}, where new findings in the
+prototyping or experimentation stages drive changes in the main
+implementation. The implementation step will equally drive a need
+to return to the prototype, experimentation and a change of
+requirements.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/process.mmd.png}
+	\caption{The iterative development process. The dashed lines
+	implies an optional order of execution}
+	\label{fig:process-diagram}
+\end{figure}
+
+Throughout development, designs decisions are documented in
+architectural decision records (ADR:s) \cite{adr, adr-github} that
+contain related requirements. Said ADR:s will be structured,
+describing what ideas were considered, which one was chosen and why
+to allow historical transparency in the system design.

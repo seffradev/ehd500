@@ -1,27 +1,29 @@
 \chapter{Introduction}
 
-Connectivity is essential for modern society. The ability to keep in
-touch, share knowledge and collaborate remotely is growing evermore
-important. A fundamental group of technologies and infrastructure
-enables these facets, all categorized within the telecommunications
-umbrella. Telecommunication businesses around the world compete to
-provide the best service, while assisting one another to enable a
-greater reach.
+Connectivity is essential for modern society. The ability to keep
+in touch, share knowledge and collaborate remotely is growing
+evermore important. A fundamental group of technologies and
+infrastructure enables these facets, all categorized within the
+telecommunications umbrella. Telecommunication businesses around
+the world compete to provide the best service, while assisting one
+another to enable a greater reach.
 
 For a user of these technologies and infrastructure, identification
 is required to ascertain the authenticity and capabilities that
 should be provided. This is provided through a Subscriber Identity
-Module (SIM) \cite{etsi-ts-131-102}, a type of smart card \cite{etsi-ts-102-221},
-that stores encryption keys and application files utilized to verify
-the subscriber in the telecommunications network. These SIM may have
-varying support when roaming or if a device is 4G- or 5G-enabled.
+Module (SIM) \cite{etsi-ts-131-102}, a type of smart card
+\cite{etsi-ts-102-221}, that stores encryption keys and application
+files utilized to verify the subscriber in the telecommunications
+network. These SIM may have varying support when roaming or if a
+device is 4G- or 5G-enabled.
 
 Considering the varying support for SIM configurations in different
 telecommunication networks, there is an interest for utilities that
 can easily enable testing, configuration and manipulation of SIM:s,
-preferably with user equipment (UE) in arbitrary locations and a bank
-of SIM in an easily (though not unauthorized) accessible office space
-that allows hot-swapping of the SIM connected to the differing UE.
+preferably with user equipment (UE) in arbitrary locations and a
+bank of SIM in an easily (though not unauthorized) accessible
+office space that allows hot-swapping of the SIM connected to the
+differing UE.
 
 The goal of this work is to develop said utilities that provide a
 SIM bank, user equipment connectivity and a mediation service. The
@@ -41,60 +43,62 @@ implementation.
 
 The third chapter addresses the results with a complete description
 of the implementation alongside diagrams, measurement results from
-the benchmarks and functionality tests described in \ref{sec:experimentation}.
-In the fourth chapter, an analysis based on the implementation is
-performed, addressing what could've been done differently and how
-the tools, structure and method aided in the solution for the
-problem at hand. Ethical considerations are provided and in the
-fifth chapter conclusions are drawn.
+the benchmarks and functionality tests described in
+\ref{sec:experimentation}. In the fourth chapter, an analysis based
+on the implementation is performed, addressing what could've been
+done differently and how the tools, structure and method aided in
+the solution for the problem at hand. Ethical considerations are
+provided and in the fifth chapter conclusions are drawn.
 
 \section{Background}
 
 Leissner Data AB (henceforth referred to as Leissner) is a Swedish
-telecommunications firm from Trollhättan founded in 1969 \cite{leissner-about}.
-The company was not originally in telecommunications but pivoted to
-an Internet Service Provider (ISP) role in 1996 with the founding
-of the sister company Götalandsnätet AB. In 2001 Leissner started
-offering telecommunication systems and has since extended to mobile
+telecommunications firm from Trollhättan founded in 1969
+\cite{leissner-about}. The company was not originally in
+telecommunications but pivoted to an Internet Service Provider
+(ISP) role in 1996 with the founding of the sister company
+Götalandsnätet AB. In 2001 Leissner started offering
+telecommunication systems and has since extended to mobile
 platforms. These mobile platforms are, for example, complete
 virtual mobile core infrastructure such as Packet Delivery Network
 Gateways (PGW:s), Short Message Service Centers (SMSC:s) and Home
 Subscriber Servers (HSS:s) \cite{leissner-mobile-core}.
 
 After a partnership with Hi3G \cite{leissner-about}, Leissner
-became a Mobile Virtual Network Enabler (MVNE) and in their
-product catalogue, they sell SIM to the Mobile Virtual Network
-Operators (MVNO). The aforementioned SIM:s is equipped with a
-digital profile compatible with their systems. These digital
-profiles are preset file structures and contents containing
-information such as the International Mobile Subscriber Identifier
-(IMSI), Service Provider Name (SPN) and encryption keys.
+became a Mobile Virtual Network Enabler (MVNE) and in their product
+catalogue, they sell SIM to the Mobile Virtual Network Operators
+(MVNO). The aforementioned SIM:s is equipped with a digital profile
+compatible with their systems. These digital profiles are preset
+file structures and contents containing information such as the
+International Mobile Subscriber Identifier (IMSI), Service Provider
+Name (SPN) and encryption keys.
 
-The digital profile may contain files that can be changed \cite{placeholder-source-for-smart-card-profiles},
-e.g. the SPN or the Personal Identification Number (PIN) as well as
-files that may not be changed, e.g. IMSI and Integrated Circuit
-Card Identifier (ICCID). The design of the digital profiles is up
-to the agreement between SIM supplier and the operator where which
-files should be writeable or not can be decided.
+The digital profile may contain files that can be changed
+\cite{placeholder-source-for-smart-card-profiles}, e.g. the SPN or
+the Personal Identification Number (PIN) as well as files that may
+not be changed, e.g. IMSI and Integrated Circuit Card Identifier
+(ICCID). The design of the digital profiles is up to the agreement
+between SIM supplier and the operator where which files should be
+writeable or not can be decided.
 
 Considering the aforementioned, a desire for a simplified test
-platform arose. This test platform would allow hot-swapping of
-SIM in a nearby location while having user equipment connecting
-from a remote location, e.g. in another city or at a customer
-office to test reliability and function of the mobile core
-platform with different SIM profiles.
+platform arose. This test platform would allow hot-swapping of SIM
+in a nearby location while having user equipment connecting from a
+remote location, e.g. in another city or at a customer office to
+test reliability and function of the mobile core platform with
+different SIM profiles.
 
 Functionality requested in such a platform include tracing of
 application protocol data units (APDU:s) where the transmitted
-APDU:s may be sniffed, or manipulation where transmitted APDU:s
-are altered to e.g. transform one PIN into another or by changing
-an SPN to something else. Reprogramming of SIM is another
-requested capability which could replace existing software and
-offer all SIM-related functionality inside a single system.
+APDU:s may be sniffed, or manipulation where transmitted APDU:s are
+altered to e.g. transform one PIN into another or by changing an
+SPN to something else. Reprogramming of SIM is another requested
+capability which could replace existing software and offer all
+SIM-related functionality inside a single system.
 
 Lastly, support for other kinds of SIM than just physical in a
-smart card reader is requested. This extends to virtual SIM in
-a custom-developed runtime.
+smart card reader is requested. This extends to virtual SIM in a
+custom-developed runtime.
 
 \section{Problem formulation}
 \label{sec:problem-formulation}
@@ -145,8 +149,8 @@ service and easily deployed devices a customer can order.
 Manipulation of APDU:s, due to the added complexity in interface
 design and time constraints will not be considered in this draft.
 Similarly, the ability to reprogram SIM are out of scope for this
-work as that relates to functionality not directly coupled with
-the forwarding of APDU:s to and from a SIM and UE.
+work as that relates to functionality not directly coupled with the
+forwarding of APDU:s to and from a SIM and UE.
 
 Only SIM will be considered in this implementation, excluding
 general smart cards since the work is aimed at telecommunications.
@@ -157,8 +161,8 @@ not included in this report.
 \section{Previous work}
 
 The primary inspiration and function description for this project
-is Osmocom's remSIM project \cite{osmocom-remsim}. It is a
-complete open source implementation of a SIM bank with forwarding
+is Osmocom's remSIM project \cite{osmocom-remsim}. It is a complete
+open source implementation of a SIM bank with forwarding
 capabilities to user equipment. Osmocom provides a user manual,
 open hardware and source code that is studied for this project's
 implementation.
@@ -167,10 +171,11 @@ There are additional solutions in the field of SIM banks with
 similar capabilities to the Osmocom remSIM and the proposed
 solution described in this document. These solutions, however, are
 proprietary \cite{polygator-sim-bank} complete solutions, usually
-offering a cloud service they own \cite{placeholder-source-cloud-sim-bank}
-not enabling the capabilities required for Leissner's purposes.
-They may also restrict the communications protocol to the SIM bank
-to a proprietary, undocumented protocol rendering implementation
+offering a cloud service they own
+\cite{placeholder-source-cloud-sim-bank} not enabling the
+capabilities required for Leissner's purposes. They may also
+restrict the communications protocol to the SIM bank to a
+proprietary, undocumented protocol rendering implementation
 difficult.
 
 The existing solutions miss out on some of the requested
@@ -190,8 +195,8 @@ implementation and the related nomenclature.
 \subsection{Nomenclature}
 
 Definitions and descriptions of terminology commonly used in this
-report are provided here. A word is explicitly stated if it has
-a specific definition in regards to this document.
+report are provided here. A word is explicitly stated if it has a
+specific definition in regards to this document.
 
 \paragraph{User Equipment}
 
@@ -201,12 +206,13 @@ They may also be called mobile equipment or mobile stations.
 
 \paragraph{Subscriber Identity Module}
 
-A SIM is a type of smart card utilized for the telecommunications sector
-\cite{etsi-ts-131-102}. Historically it was called SIM during the prime of 2G,
-but a later revision called Universal SIM (USIM) with 3G \cite{etsi-ts-131-102}
-support was developed. USIM also enable 4G and 5G support given an
-appropriate digital profile. While USIM may be the correct term, SIM
-will be used in its place, though colloquially mean USIM.
+A SIM is a type of smart card utilized for the telecommunications
+sector \cite{etsi-ts-131-102}. Historically it was called SIM
+during the prime of 2G, but a later revision called Universal SIM
+(USIM) with 3G \cite{etsi-ts-131-102} support was developed. USIM
+also enable 4G and 5G support given an appropriate digital profile.
+While USIM may be the correct term, SIM will be used in its place,
+though colloquially mean USIM.
 
 A SIM is used to provide authentication capabilities by storing
 encrypted keys and identification files within a telecommunications
@@ -219,7 +225,8 @@ Application Protocol Data Units (APDU:s) are the application-level
 communications protocol, residing on top of the transport layer of
 a smart card and terminal interface \cite{etsi-ts-102-221}. These
 may be file selections in the smart card, file reads, writes or
-some other operation supported by the smart card \cite{etsi-ts-102-221}.
+some other operation supported by the smart card
+\cite{etsi-ts-102-221}.
 
 \paragraph{SIM bank, SIM box or SIM farm}
 
@@ -245,23 +252,24 @@ received APDU:s to the UE.
 
 The mediator is in this paper the service that manages connections
 between SIM:s in the SIM bank and ties them to a SIM consumer. It
-manages Answer To Resets (ATR:s) for each SIM so user equipment
-can identify the type of card upon connection establishment.
-Alongside ATR:s, it forwards APDU:s to support tracing and
-manipulation capabilities.
+manages Answer To Resets (ATR:s) for each SIM so user equipment can
+identify the type of card upon connection establishment. Alongside
+ATR:s, it forwards APDU:s to support tracing and manipulation
+capabilities.
 
 \subsection{Requirements engineering}
 
-This section cites from Sommerville's work Software Engineering \cite{sommerville-software-engineering}.
-Requirements engineering is the craft of finding, defining,
-validating and changing requirements for the solution of a problem.
-Requirements grow and change alongside the lifecycle of a project
-and requirements engineering is a formalization of how the process
-works. Requirements can be separated into functional and
-non-functional where functional requirements specify what a system
-should do while non-functional requirements specify peripheral
-qualities of the system, such as implementation constraints,
-response time and interface design.
+This section cites from Sommerville's work Software Engineering
+\cite{sommerville-software-engineering}. Requirements engineering
+is the craft of finding, defining, validating and changing
+requirements for the solution of a problem. Requirements grow and
+change alongside the lifecycle of a project and requirements
+engineering is a formalization of how the process works.
+Requirements can be separated into functional and non-functional
+where functional requirements specify what a system should do while
+non-functional requirements specify peripheral qualities of the
+system, such as implementation constraints, response time and
+interface design.
 
 The first step is elicitation, which includes gathering of
 requirements from stakeholders, establishing the kind of
@@ -274,10 +282,10 @@ involved or affected by the system.
 The second step is specification. This entails writing formal or
 more technical specifications with additional details relevant to
 the implementers but not all stakeholders. Formalizations may take
-different appearances, as shown in figure 4.11 in \cite{sommerville-software-engineering}
-where natural language, both in unstructured and structured form,
-graphical notations and mathematical models are examples of
-formalizations.
+different appearances, as shown in figure 4.11 in
+\cite{sommerville-software-engineering} where natural language,
+both in unstructured and structured form, graphical notations and
+mathematical models are examples of formalizations.
 
 The third step is validation of the requirements. This means
 testing the requirements for validity, consistency, completeness,
