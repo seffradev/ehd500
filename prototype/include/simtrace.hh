@@ -40,7 +40,7 @@ EXCEPTION(GsmTapException);
 
 class SimTrace2 {
 public:
-    static constexpr auto create() -> std::expected<SimTrace2, SimTraceError> {
+    static constexpr auto create() -> std::expected<SimTrace2, error::SimTraceError> {
         auto trace = SimTrace2{};
 
         auto result_code = osmo_libusb_init(nullptr);
@@ -154,8 +154,7 @@ private:
         auto card  = trace.instance->chan->card;
         auto reset = std::optional<Reset>{std::nullopt};
 
-        if ((flags & CEMU_STATUS_F_VCC_PRESENT) && (flags & CEMU_STATUS_F_CLK_ACTIVE) &&
-            !(flags & CEMU_STATUS_F_RESET_ACTIVE)) {
+        if ((flags & CEMU_STATUS_F_VCC_PRESENT) && (flags & CEMU_STATUS_F_CLK_ACTIVE) && !(flags & CEMU_STATUS_F_RESET_ACTIVE)) {
             if (trace.lastStatusFlags & CEMU_STATUS_F_RESET_ACTIVE) {
                 if (trace.lastStatusFlags & CEMU_STATUS_F_VCC_PRESENT)
                     reset = Reset::Warm;
@@ -191,8 +190,8 @@ private:
 
         auto flagsBuffer = cemuStatusFlagsToString(status->flags);
 
-        std::println(std::cerr, "=> IRQ STATUS: flags: {:#04x}, fi: {}, di: {}, wi: {}, wtime: {} ({})", status->flags,
-                     status->fi, status->di, status->wi, status->waiting_time, flagsBuffer);
+        std::println(std::cerr, "=> IRQ STATUS: flags: {:#04x}, fi: {}, di: {}, wi: {}, wtime: {} ({})", status->flags, status->fi,
+                     status->di, status->wi, status->waiting_time, flagsBuffer);
 
         updateStatusFlags(trace, status->flags);
 
@@ -214,7 +213,6 @@ private:
     }
 
     static auto usbIrqTransferCallback(struct libusb_transfer *transfer) {
-        std::println("Called {}", std::source_location::current().function_name());
         auto trace = reinterpret_cast<SimTrace2 *>(transfer->user_data);
 
         switch (transfer->status) {
@@ -273,9 +271,8 @@ private:
 
         auto flagsBuffer = cemuStatusFlagsToString(status->flags);
 
-        std::println("=> STATUS: flags: {:#04x}, fi: {}, di: {}, wi: {}, wtime: {} ({})",
-                     static_cast<uint32_t>(status->flags), status->fi, status->di, status->wi,
-                     static_cast<uint32_t>(status->waiting_time), flagsBuffer);
+        std::println("=> STATUS: flags: {:#04x}, fi: {}, di: {}, wi: {}, wtime: {} ({})", static_cast<uint32_t>(status->flags), status->fi,
+                     status->di, status->wi, static_cast<uint32_t>(status->waiting_time), flagsBuffer);
 
         updateStatusFlags(trace, status->flags);
 
@@ -298,8 +295,8 @@ private:
 
         data = (struct cardemu_usb_msg_rx_data *)buffer;
 
-        std::println("=> DATA: flags={:#04x} ({}), {}", static_cast<uint32_t>(data->flags),
-                     cemuDataFlagsToString(data->flags), osmo_hexdump(data->data, data->data_len));
+        std::println("=> DATA: flags={:#04x} ({}), {}", static_cast<uint32_t>(data->flags), cemuDataFlagsToString(data->flags),
+                     osmo_hexdump(data->data, data->data_len));
 
         rc = osmo_apdu_segment_in(&ac, data->data, data->data_len, data->flags & CEMU_DATA_F_TPDU_HDR);
         if (rc < 0) {
@@ -333,8 +330,7 @@ private:
             msgb_apdu_sw(tmsg) = msgb_get_u16(tmsg);
             ac.sw[0]           = msgb_apdu_sw(tmsg) >> 8;
             ac.sw[1]           = msgb_apdu_sw(tmsg) & 0xff;
-            if (msgb_l3len(tmsg))
-                osmo_st2_cardem_request_pb_and_tx(trace.instance.get(), ac.hdr.ins, tmsg->l3h, msgb_l3len(tmsg));
+            if (msgb_l3len(tmsg)) osmo_st2_cardem_request_pb_and_tx(trace.instance.get(), ac.hdr.ins, tmsg->l3h, msgb_l3len(tmsg));
             osmo_st2_cardem_request_sw_tx(trace.instance.get(), ac.sw);
         } else if (ac.lc.tot > ac.lc.cur) {
             osmo_st2_cardem_request_pb_and_rx(trace.instance.get(), ac.hdr.ins, ac.lc.tot - ac.lc.cur);
@@ -363,7 +359,6 @@ private:
     }
 
     static void usbInTransferCallback(struct libusb_transfer *transfer) {
-        std::println("Called {}", std::source_location::current().function_name());
         auto trace = reinterpret_cast<SimTrace2 *>(transfer->user_data);
 
         switch (transfer->status) {

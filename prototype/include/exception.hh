@@ -1,7 +1,7 @@
 #ifndef EXCEPTION_HH
 #define EXCEPTION_HH
 
-#include <print>
+#include <format>
 #include <system_error>
 #include <utility>
 
@@ -15,11 +15,10 @@
         std::string message;                                                             \
     }
 
+namespace error {
+
 template <typename E>
-concept Error = requires(E e) {
-    e.toString();
-    e.internal;
-};
+concept Error = requires(E e) { std::formatter<E>{}; };
 
 struct SimTraceError {
     const std::errc internal;
@@ -75,12 +74,13 @@ struct SystemError {
         std::unreachable();
     }
 };
+}
 
 template <>
-struct std::formatter<SystemError> {
+struct std::formatter<error::SystemError> {
     constexpr auto parse(std::format_parse_context& context) { return context.begin(); }
 
-    auto format(const SystemError& error, std::format_context& context) const {
+    auto format(const error::SystemError& error, std::format_context& context) const {
         auto codeToString = [&error = error.internal] {
             switch (error) {
                 case std::errc::address_family_not_supported:

@@ -11,6 +11,7 @@
 #include "tcp.hh"
 
 using namespace std::literals;
+using namespace stream;
 
 struct CardRemoved {
     GenericData atr;
@@ -58,8 +59,8 @@ auto handleQueue(SimTrace2 &trace, Queue queue, std::stop_token token) {
     trace.run();
 }
 
-auto pollMessage(TcpClient &client, Queue &queue, std::stop_source &stop_source) {
-    auto message = client.read<Atp>();
+auto pollMessage(RwStream<Atp, error::SystemError> auto &stream, Queue &queue, std::stop_source &stop_source) {
+    auto message = stream.template read<Atp>();
 
     if (!message) {
         std::println(std::cerr, "Could not read from socket: {}", message.error());
@@ -88,7 +89,7 @@ auto pollMessage(TcpClient &client, Queue &queue, std::stop_source &stop_source)
             break;
     }
 
-    auto result = client.write<GenericData>(*message);
+    auto result = stream.template write<GenericData>(*message);
     if (!result) {
         std::println("Failed to transmit message {}. Reason: {}", *message, result.error());
     } else {
@@ -99,13 +100,6 @@ auto pollMessage(TcpClient &client, Queue &queue, std::stop_source &stop_source)
 int main(int, char *[]) {
     auto stop_source = std::stop_source{};
     auto queue       = Queue{};
-
-    // auto clientHandler = std::jthread{[&client, &queue, &stop_source]() {
-    //     std::println("Client ready");
-    //     while (!stop_source.stop_requested()) {
-    //         pollMessage(client, queue, stop_source);
-    //     }
-    // }};
 
     auto trace = SimTrace2::create();
 

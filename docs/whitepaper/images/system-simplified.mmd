@@ -1,6 +1,6 @@
 architecture-beta
   group simbank[SIM bank]
-  group consumer[Consumer]
+  group uesink[UE sink]
   group mediator[Mediator]
 
   service sim(solar:sim-card-linear)[Smart card]
@@ -9,8 +9,8 @@ architecture-beta
   service reader(solar:flash-drive-linear)[Smart card reader] in simbank
   service rpi1(solar:ssd-square-linear)[Raspberry Pi] in simbank
 
-  service simtrace(solar:flash-drive-linear)[SIMtrace 2] in consumer
-  service rpi2(solar:ssd-square-linear)[Raspberry Pi] in consumer
+  service simtrace(solar:flash-drive-linear)[SIMtrace 2] in uesink
+  service rpi2(solar:ssd-square-linear)[Raspberry Pi] in uesink
 
   service server(solar:server-linear)[Server] in mediator
   service datastore(solar:database-linear)[Data Store] in mediator

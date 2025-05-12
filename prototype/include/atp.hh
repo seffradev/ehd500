@@ -1,8 +1,6 @@
 #ifndef ATP_HH
 #define ATP_HH
 
-#include <sys/socket.h>
-
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
@@ -10,7 +8,6 @@
 #include <expected>
 #include <format>
 #include <iterator>
-#include <print>
 #include <ranges>
 #include <string>
 #include <string_view>
@@ -20,7 +17,7 @@
 
 #include "data.hh"
 #include "exception.hh"
-#include "tcp.hh"
+#include "stream.hh"
 
 EXCEPTION(AtpException);
 
@@ -58,10 +55,7 @@ struct std::formatter<Type> {
 
 struct Atp {
     constexpr Atp(auto version, Type type, std::ranges::contiguous_range auto&& data)
-        : version(version),
-          type(static_cast<std::underlying_type_t<Type>>(type)),
-          length(data.size()),
-          data(std::move(data)) {}
+        : version(version), type(static_cast<std::underlying_type_t<Type>>(type)), length(data.size()), data(std::move(data)) {}
 
     explicit constexpr Atp(const GenericData& data) {
         if (data.size() < minimumSize) {
@@ -82,16 +76,15 @@ struct Atp {
         }
 
         this->data.reserve(length);
-        std::copy(std::cbegin(data) + minimumSize, std::cbegin(data) + minimumSize + length,
-                  std::back_inserter(this->data));
+        std::copy(std::cbegin(data) + minimumSize, std::cbegin(data) + minimumSize + length, std::back_inserter(this->data));
     }
 
-    constexpr operator GenericData() {
+    constexpr operator GenericData() const {
         auto out = std::vector<std::byte>{};
         out.reserve(length + minimumSize);
 
-        auto header = (static_cast<uint32_t>(version) << versionOffset) + (static_cast<uint32_t>(type) << typeOffset) +
-                      static_cast<uint32_t>(length);
+        auto header =
+            (static_cast<uint32_t>(version) << versionOffset) + (static_cast<uint32_t>(type) << typeOffset) + static_cast<uint32_t>(length);
 
         out.emplace_back(static_cast<std::byte>(header >> 24));
         out.emplace_back(static_cast<std::byte>(header >> 16));
@@ -127,39 +120,47 @@ private:
     static constexpr auto reservedBytes = ~(versionBytes | typeBytes | lengthBytes);
 };
 
+static_assert(stream::Writeable<Atp>);
+
 template <>
 struct std::formatter<Atp> {
     constexpr auto parse(std::format_parse_context& context) { return context.begin(); }
 
     auto format(const Atp& atp, std::format_context& context) const {
-        return std::format_to(context.out(), "Version: {}, Type: {}, Length: {}, Data: {}", atp.version, atp.getType(),
-                              atp.length, hexString(atp.data));
+        return std::format_to(context.out(), "Version: {}, Type: {}, Length: {}, Data: {}", atp.version, atp.getType(), atp.length,
+                              hexString(atp.data));
     }
 };
 
-template <>
-constexpr auto TcpSocket::read<Atp>() -> std::expected<Atp, SystemError> {
-    auto buffer = read<GenericData, Atp::minimumSize>();
+template <stream::ReadStream<Atp, error::SystemError> Stream>
+class stream::read<Atp, error::SystemError, Stream> {
+    static auto operator()(Stream& s) -> std::expected<Atp, error::SystemError> {
+        auto buffer = s.template read<GenericData, Atp::minimumSize>();
 
-    if (!buffer) {
-        return std::unexpected{buffer.error()};
+        if (!buffer) {
+            return std::unexpected{buffer.error()};
+        }
+
+        auto shortAtp       = Atp{*buffer};
+        auto variableBuffer = s.read(shortAtp.length);
+
+        if (!variableBuffer) {
+            return std::unexpected{variableBuffer.error()};
+        }
+
+        return Atp{
+            shortAtp.version,
+            shortAtp.getType(),
+            std::move(*variableBuffer),
+        };
     }
+};
 
-    auto shortAtp       = Atp{*buffer};
-    auto variableBuffer = read(shortAtp.length);
-
-    if (!variableBuffer) {
-        return std::unexpected{variableBuffer.error()};
+template <stream::WriteStream<Atp, error::SystemError> Stream>
+class stream::write<Atp, error::SystemError, Stream> {
+    static auto operator()(Stream& s, const Atp& data) -> std::expected<size_t, error::SystemError> {
+        return s.write(static_cast<GenericData>(data));
     }
-
-    auto atp = Atp{
-        shortAtp.version,
-        shortAtp.getType(),
-        std::move(*variableBuffer),
-    };
-
-    std::println("{}: {}", std::source_location::current().function_name(), atp);
-    return atp;
-}
+};
 
 #endif

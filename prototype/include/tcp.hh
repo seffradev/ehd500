@@ -3,6 +3,7 @@
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -10,24 +11,24 @@
 #include <cerrno>
 #include <cstdint>
 #include <expected>
-#include <print>
-#include <ranges>
-#include <source_location>
 #include <string>
-#include <system_error>
 
 #include "data.hh"
 #include "exception.hh"
+#include "stream.hh"
 
 EXCEPTION(SocketException);
 
+template <typename Stream>
+concept TcpStream = stream::RwStream<Stream, GenericData, error::SystemError>;
+
 class TcpSocket {
 public:
-    constexpr auto write(const std::ranges::forward_range auto &data) -> std::expected<size_t, SystemError> {
-        std::println("{}: {}", std::source_location::current().function_name(), hexString(data));
+    template <typename Data = GenericData, typename Error = error::SystemError>
+    constexpr auto write(const Data &data) -> std::expected<size_t, Error> {
         auto size = static_cast<size_t>(send(peer, data.data(), data.size(), 0));
         if (size < 0) {
-            auto error = SystemError{std::errc{errno}};
+            auto error = error::SystemError{std::errc{errno}};
 
             if (error.isSocketError()) {
                 close(peer);
@@ -39,12 +40,12 @@ public:
         return size;
     }
 
-    template <typename Serialize = GenericData, size_t size = 1024, typename Return = Serialize,
-              typename Error = SystemError, typename Result = std::expected<Serialize, Error>>
+    template <typename Serialize = GenericData, size_t size = 1024, typename Return = Serialize, typename Error = error::SystemError,
+              typename Result = std::expected<Serialize, Error>>
     constexpr auto read() -> Result {
         auto buffer = std::array<std::byte, size>{};
         if (recv(peer, buffer.data(), size, 0) < 0) {
-            auto error = SystemError{std::errc{errno}};
+            auto error = error::SystemError{std::errc{errno}};
 
             if (error.isSocketError()) {
                 close(peer);
@@ -53,16 +54,15 @@ public:
 
             return std::unexpected{error};
         }
-        std::println("{}: {}", std::source_location::current().function_name(), hexString(buffer));
-        return buffer;
+        return Serialize{buffer};
     }
 
-    template <typename Serialize = GenericData, typename Return = Serialize, typename Error = SystemError,
+    template <typename Serialize = GenericData, typename Return = Serialize, typename Error = error::SystemError,
               typename Result = std::expected<Serialize, Error>>
     constexpr auto read(size_t size) -> Result {
         auto buffer = std::vector<std::byte>(size);
         if (recv(peer, buffer.data(), size, 0) < 0) {
-            auto error = SystemError{std::errc{errno}};
+            auto error = error::SystemError{std::errc{errno}};
 
             if (error.isSocketError()) {
                 close(peer);
@@ -71,7 +71,6 @@ public:
 
             return std::unexpected{error};
         }
-        std::println("{}: {}", std::source_location::current().function_name(), hexString(buffer));
         return buffer;
     }
 
@@ -107,7 +106,7 @@ public:
             throw SocketException{"could not bind socket"};
         }
 
-        if (listen(sock, max_concurrent_clients)) {
+        if (listen(sock, maxConcurrentClients)) {
             throw SocketException{"could not prepare for clients"};
         }
 
@@ -117,10 +116,12 @@ public:
     }
 
 private:
-    static constexpr auto max_concurrent_clients = 1;
+    static constexpr auto maxConcurrentClients = 1;
 
     uint16_t sock;
 };
+
+static_assert(TcpStream<TcpServer>);
 
 class TcpClient : public TcpSocket {
 public:
@@ -138,5 +139,7 @@ public:
         }
     }
 };
+
+static_assert(TcpStream<TcpClient>);
 
 #endif
