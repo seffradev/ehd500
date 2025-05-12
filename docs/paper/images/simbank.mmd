@@ -1,0 +1,33 @@
+architecture-beta
+  service server(solar:ssd-square-linear)[Server]
+  service network(solar:cloud-linear)[Network]
+
+  service reader1(solar:flash-drive-linear)[Smart card reader]
+  service reader2(solar:flash-drive-linear)[Smart card reader]
+  service reader3(solar:flash-drive-linear)[Smart card reader]
+  service reader4(solar:flash-drive-linear)[Smart card reader]
+  service reader5(solar:flash-drive-linear)[Smart card reader]
+  service reader6(solar:flash-drive-linear)[Smart card reader]
+
+  junction leftCenterJunction
+  junction leftTopJunction
+  junction leftBottomJunction
+  junction rightCenterJunction
+  junction rightTopJunction
+  junction rightBottomJunction
+
+  server:T -- B:network
+  server:L -- R:leftCenterJunction
+  server:R -- L:rightCenterJunction
+
+  leftCenterJunction:T -- B:leftTopJunction
+  leftCenterJunction:L -- R:reader2
+  leftCenterJunction:B -- T:leftBottomJunction
+  leftTopJunction:L -- R:reader1
+  leftBottomJunction:L -- R:reader3
+
+  rightCenterJunction:T -- B:rightTopJunction
+  rightCenterJunction:R -- L:reader4
+  rightCenterJunction:B -- T:rightBottomJunction
+  rightTopJunction:R -- L:reader5
+  rightBottomJunction:R -- L:reader6

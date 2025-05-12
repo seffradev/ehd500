@@ -141,7 +141,7 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
 
   outline(title: [Table of contents], depth: 2)
 
-  if abbreviations.len() > 1 {
+  if abbreviations.len() > 0 {
     pagebreak()
     heading([Abbreviations])
     align(center, table(
@@ -161,7 +161,8 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
   )
 
   set align(left)
-  show heading.where(level: 1): it => pagebreak() + text(it)
+  show heading.where(level: 1): it => pagebreak() + it
+
   show heading.where(level: 4): it => {
     if (it.level >= 3) {
       block(it.body)
@@ -169,6 +170,11 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
       block(counter(heading).display() + " " + it.body)
     }
   }
+
+  import "@preview/i-figured:0.2.4"
+
+  show heading: i-figured.reset-counters
+  show figure: i-figured.show-figure
 
   doc
 

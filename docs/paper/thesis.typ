@@ -1,10 +1,14 @@
 #import "template.typ": thesis
 
 #show: thesis.with(
-  [A remote SIM bank, a UE sink, and a mediator -- Implementation
-  of a utility for distributed coverage testing],
-  [En fjärråtkomlig SIM-bank, en UE-uppsamlare och en medlare --
-  Ett redskap för distribuerad täckningstestning],
+  [
+    A remote SIM bank, a UE sink, and a mediator -- Implementation
+    of a utility for distributed coverage testing
+  ],
+  [
+    En fjärråtkomlig SIM-bank, en UE-uppsamlare och en medlare --
+    Ett redskap för distribuerad täckningstestning
+  ],
   authors: (
     (
       name: "Hampus Avekvist",
@@ -15,11 +19,11 @@
   abstract: lorem(80),
   swedish_abstract: lorem(80),
   keywords: [
-    5-10 words, separated by commas, describing the \
+    5-10 words, separated by commas, describing the #linebreak()
     contents of the report
   ],
   swedish_keywords: [
-    Här skrivs 5-10 ord, åtskilda med kommatecken, som \
+    Här skrivs 5-10 ord, åtskilda med kommatecken, som #linebreak()
     beskriver rapportens innehåll, ej ord från titeln
   ],
   preface: [
@@ -35,8 +39,8 @@
 
     An anecdote to illustrate what this report addresses:
     imagine having a mobile phone in China, and another in Spain. Due
-    to the geographical, political and historical differences, it is
-    not inconcievable that the mobile networks act differently. In a
+    to the geographical, political, and historical differences, it is
+    not inconceivable that the mobile networks act differently. In a
     smaller scale, the same network operator in two different countries
     may support different functionality based on local laws and
     agreements with other operators. This means the same mobile device
@@ -46,73 +50,36 @@
   ],
   abbreviations: (
     (
-      short: "3GPP",
-      long: "3rd Generation Partnership Program",
-    ),
-    (
-      short: "ADR",
-      long: "Architectural Decision Record",
-    ),
-    (
-      short: "APDU",
-      long: "Application Protocol Data Unit",
-    ),
-    (
-      short: "ATR",
-      long: "Answer To Reset",
-    ),
-    (
-      short: "ETSI",
-      long: "European Telecommunications Standards Institute",
-    ),
-    (
-      short: "ICCID",
-      long: "Integrated Circuit Card Identifier",
-    ),
-    (
-      short: "ISO",
-      long: "International Organization for Standardization",
-    ),
-    (
-      short: "ISP",
-      long: "Internet Service Provider",
-    ),
-    (
-      short: "MVNE",
-      long: "Mobile Virtual Network Enabler",
-    ),
-    (
-      short: "MVNO",
-      long: "Mobile Virtual Network Operator",
-    ),
-    (
-      short: "PC/SC",
-      long: "Personal Computer / Smart Card",
-    ),
-    (
-      short: "PIN",
-      long: "Personal Identification Number",
-    ),
-    (
-      short: "SIM",
-      long: "Subscriber Identity Module",
-    ),
-    (
-      short: "SPN",
-      long: "Service Provider Name",
-    ),
-    (
-      short: "TARA",
-      long: "Threat assessment and remediation analysis",
-    ),
-    (
-      short: "USIM",
-      long: "Universal Subscriber Identity Module",
+      short: "TEMP",
+      long: "Temporary abbreviation",
     ),
   ),
 )
 
 = Introduction <sec:introduction>
+
+Communications technology is rapidly evolving. As telecom standards
+evolve, the networks grow complex. The complexity is affected by
+contracts with third-party telecom service providers, and
+geographical differences affecting mobile mast placement.
+Interoperability and standards' compliance is difficult.
+Subscribers to a telecom service provider expect the networks to be
+reliable, predictable, and fast. They also expect the services to
+be usable when travelling.
+
+Three important keys to ensure the three tenets reliability,
+consistency, and speed, is authentication, authorization, and
+accounting the subscriber's activity. Authentication is used to
+identify the subscriber. Authorization gives the subscriber access
+to the services they pay for. Accounting bookkeeps the subcriber's
+usage for billing and tracking data allowances.
+
+The Subscriber Identity Module (SIM) is a device that stores
+authentication keys and information used by the networks to
+identify and authorize use of telecom services. In nature of the
+information stored on these devices and the complexity of the
+networks, the same SIM in the same device moved to another physical
+location may provide alternate capabilities.
 
 Connectivity is essential for modern society. The ability to keep
 in touch, share knowledge and collaborate remotely is growing
@@ -131,15 +98,15 @@ utilized to verify the subscriber in the telecommunications
 network. These SIM may have varying support when roaming or if a
 device is 4G- or 5G-enabled.
 
-Considering the varying support for SIM configurations in different
-telecommunication networks, there is an interest for utilities that
-can easily enable testing, configuration and manipulation of SIM:s,
-preferably with user equipment (UE) in arbitrary locations and a
-bank of SIM in an easily (though not unauthorized) accessible
-office space that allows hot-swapping of the SIM connected to the
-differing UE.
+Utilities for testing, configuration and manipulation of SIM:s
+serve a purpose in regard to varying support of SIM configurations
+in different telecommunication networks. The utilities shall allow
+user equipment (UE) in arbitrary locations. A bank of SIM in an
+easily (though not unauthorized) accessible office space that
+enables hot-swapping of an SIM connected to different UE best be a
+part of the aforementioned utilities.
 
-The goal of this work is to develop said utilities that provide a
+The goal of this work is to develop said utilities that provide an
 SIM bank, user equipment connectivity and a mediation service. The
 mediation service enables pairing of SIM-to-UE with a logical
 hot-swapping facility, rendering physical access to the SIM bank
@@ -160,7 +127,7 @@ of the implementation alongside diagrams, measurement results from
 the benchmarks and functionality tests described in
 @sec:experimentation. In the fourth chapter, an analysis based on
 the implementation is performed, addressing what could've been done
-differently and how the tools, structure and method aided in the
+differently and how the tools, structure, and method aided in the
 solution for the problem at hand. Ethical considerations are
 provided and in the fifth chapter conclusions are drawn.
 
@@ -341,6 +308,16 @@ operation supported by the smart card @etsi-ts-102-221.
 
 ==== SIM bank, SIM box or SIM farm <sec:sim-bank>
 
+#align(center)[
+  #figure(
+    image("images/simbank.mmd.png", width: 80%),
+    caption: [
+      An illustrative example of an SIM bank with six readers,
+      connected to a network.
+    ]
+  ) <sim-bank>
+]
+
 A SIM bank is a device that provides connectivity to multiple SIM
 simultaneously @hyprms-sim-bank. This may be used for connecting to
 multiple operators or to have different SIM configurations from a
@@ -422,16 +399,18 @@ to derive a solution to the problem statements in
 
 == Materials and equipment <sec:materials>
 
-This section lists the equipment, material and tools used in the
-implementation. @fig:simplified-system-diagram shows how the
-majority of the physical components are connected.
-
 #align(center)[
   #figure(
     image("images/system-simplified.mmd.png", width: 100%),
-    caption: "Overview of the intended system diagram"
-  ) <fig:simplified-system-diagram>
+    caption: [
+      Overview of the intended system diagram.
+    ]
+  ) <simplified-system-diagram>
 ]
+
+This section lists the equipment, material and tools used in the
+implementation. @fig:simplified-system-diagram shows how the
+majority of the physical components are connected.
 
 === SIMtrace 2 <sec:materials:simtrace>
 
@@ -529,13 +508,6 @@ phase while also themselves provide additional information that can
 sprout new concepts to initially implement in the prototype before
 adding to the final implementation.
 
-#align(center)[
-  #figure(
-    image("images/prototype.mmd.png", width: 90%),
-    caption: "Prototype system overview",
-  ) <fig:prototype-diagram>
-]
-
 The prototype, as shown in @fig:prototype-diagram, only requires
 the functionality for communication between the two Raspberry Pi:s
 used, while being restricted to only a singular SIM and singular
@@ -594,31 +566,75 @@ requirements.
 
 = Results <sec:results>
 
+The following sections provide the deliverables. The results may be
+used for further work in authoring requirements and inspiring
+future solutions, but they are not for production grade
+applications.
+
+== Prototype <sec:results:prototype>
+
+The prototype is implemented in two parts: the SIM-bank and the
+UE-sink, as shown in @prototype-diagram. The bank uses the PC/SC
+abstraction for C++ provided by @electronic-id. The sink uses the
+SIMtrace2 and Osmocom core libraries @simtrace-library
+@osmocom-osmocore for communication with and management of the
+SIMtrace2 device and UE.
+
+#align(center)[
+  #figure(
+    image("images/prototype.mmd.png", width: 100%),
+    caption: [
+      Prototype system overview.
+    ],
+  ) <prototype-diagram>
+]
+
+The prototype has support for SIM-bank to UE-sink communication;
+though, the UE-sink has no ability to communicate with the UE
+itself. The library and tools available from Osmocom were
+nontrivial to integrate and mentioned @osmocom-limitations
+limitations in pre-made firmware was incompatible with the use case
+without alterations that were out of scope for this thesis.
+
+The prototype is capable of carrying messages to and from the SIM
+in the smart card reader (shown in @fig:prototype-diagram) over a
+TCP connection. The TCP connection between the two Raspberry Pi
+units carry a bespoke protocol designed called APDU and ATR
+Tunneling Protocol, or ATP for short. The layout of the protocol is
+shown in @fig:atp-diagram.
+
 #align(center)[
   #figure(
     image("images/atp.mmd.png", width: 100%),
-    caption: "APDU and ATR Tunneling Protocol (ATP)"
-  ) <fig:atp-diagram>
+    caption: [
+      APDU and ATR Tunneling Protocol (ATP).
+    ],
+  ) <atp-diagram>
 ]
 
-#align(center)[
-  #figure(
-    image("images/system.mmd.png", width: 100%),
-    caption: "High-level system diagram"
-  ) <fig:system-diagram>
-]
+The protocol first contains a version field for future-proofing
+changes if it is employed in a production setting. Second, a field
+for identifying what kind of message it is. Third, reserved bits
+for aforementioned future-proofing. Last, a length field that
+denotes the length the final data field may be.
+
+The protocol design accounted for the possible size of APDU data
+@apdu-data-size when the bit count for the length field was
+determined. The other fields were adapted based on the remaining
+bit count in a 32-bit integer while ensuring the type field had
+space for the intended message types. The version field was chosen
+arbitrarily but allows future modification of the protocol, such as
+extending the type field into the reserved space and altering the
+header completely. When every version change denotes a breaking
+change, a total of 16 different versions were sufficient.
+
+The protocol contains four message types: `APDU`, `ATR`,
+`UnsetCard` and `Stop`. The first is used to denote that the data
+payload is APDU data. The second is to denote ATR data payload. The
+third is to inform the UE that the previously inserted card is
+disconnected. The last type is used for halting the connection.
 
 == Threat analysis <sec:result:tara>
-
-== Deliverables <sec:results:deliverables>
-
-=== SIM bank <sec:deliverables:sim-bank>
-
-=== Consumer <sec:deliverables:consumer>
-
-=== Mediator <sec:deliverables:mediator>
-
-=== Documentation <sec:deliverables:documentation>
 
 = Analysis/Discussion <sec:analysis>
 
@@ -661,15 +677,17 @@ requirements. The process is iterative as mentioned in the previous
 sections and shown in @fig:process-diagram, where new findings in
 the prototyping or experimentation stages drive changes in the main
 implementation. The implementation step will equally drive a need
-to return to the prototype, experimentation and a change of
+to return to the prototype, experimentation, and a change of
 requirements.
 
 #align(center)[
   #figure(
     image("images/process.mmd.png", width: 50%),
-    caption: "The iterative development process. The dashed lines
-	implies an optional order of execution",
-  ) <fig:process-diagram>
+    caption: [
+      The iterative development process. The dashed lines implies
+      an optional order of execution
+    ],
+  ) <process-diagram>
 ]
 
 Throughout development, designs decisions are documented in
