@@ -1,15 +1,15 @@
 architecture-beta
-  group simbank[SIM bank]
-  group consumer[Consumer]
+  group bank[SIM bank]
+  group sink[UE sink]
 
   service sim(solar:sim-card-linear)[Smart card]
   service ue(solar:wi-fi-router-linear)[Teltonika RUT200]
 
-  service reader(solar:flash-drive-linear)[Smart card reader] in simbank
-  service rpi1(solar:ssd-square-linear)[Raspberry Pi] in simbank
+  service reader(solar:flash-drive-linear)[Smart card reader] in bank
+  service rpi1(solar:ssd-square-linear)[Raspberry Pi] in bank
 
-  service simtrace(solar:flash-drive-linear)[SIMtrace 2] in consumer
-  service rpi2(solar:ssd-square-linear)[Raspberry Pi] in consumer
+  service simtrace(solar:flash-drive-linear)[SIMtrace 2] in sink
+  service rpi2(solar:ssd-square-linear)[Raspberry Pi] in sink
 
   sim:T <--> B:reader
   reader:R <--> L:rpi1

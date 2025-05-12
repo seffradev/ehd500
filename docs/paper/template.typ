@@ -26,6 +26,17 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
     )
   ]
 
+  place(
+    top + right,
+    scope: "parent",
+    float: true,
+    dy: -140pt,
+  )[
+    #align(left + horizon,
+      image("images/logo-leissner-data.png", width: 40%)
+    )
+  ]
+
   set align(left)
   text(28pt, title)
 
@@ -141,6 +152,11 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
 
   outline(title: [Table of contents], depth: 2)
 
+  set page(
+    numbering: "1",
+  )
+  counter(page).update(1)
+
   if abbreviations.len() > 0 {
     pagebreak()
     heading([Abbreviations])
@@ -152,13 +168,12 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
         (table.cell(short), table.cell(long))
       }
     ))
+    
+    [Some of the above abbreviations are additionally defined in
+    the following chapter.]
   }
 
   set heading(numbering: "1.")
-  counter(page).update(1)
-  set page(
-    numbering: "1",
-  )
 
   set align(left)
   show heading.where(level: 1): it => pagebreak() + it

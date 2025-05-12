@@ -2,12 +2,11 @@
 
 #show: thesis.with(
   [
-    A remote SIM bank, a UE sink, and a mediator -- Implementation
-    of a utility for distributed coverage testing
+    Physically separated SIM- and UE-connectivity device
+    prototypes
   ],
   [
-    En fjärråtkomlig SIM-bank, en UE-uppsamlare och en medlare --
-    Ett redskap för distribuerad täckningstestning
+    Fysiskt separerade SIM- och UE-konnektivitetsenhetsprototyper
   ],
   authors: (
     (
@@ -16,120 +15,207 @@
       email: "hampus.avekvist@hey.com",
     ),
   ),
-  abstract: lorem(80),
-  swedish_abstract: lorem(80),
+  abstract: [
+    This paper introduces the concept of Subscriber Identity Module
+    (SIM) banks, User Equipment (UE) sinks and discuss a mediator
+    of these. The thesis itself doesn't design the mediator but
+    presents it as the end-goal of the work the thesis starts.
+
+    Communication between the banks and sinks are discussed where
+    specifically forwarding of Application Protocol Data Units
+    (APDU) is highlighted as an essential function to be
+    implemented.
+
+    A prototype-based software engineering approach is employed in
+    designing two devices based on Raspberry Pi, SIMtrace 2 and
+    smart card reader hardware. The two devices implement a
+    protocol for the forwarding of APDU packets.
+
+    A thorough discussion on future work is presented where
+    experimentation and requirements elicitation is highlighted. As
+    those parts have been conducted, it's suggested that a full
+    system implementation is written.
+  ],
+  swedish_abstract: [
+    Denna uppsats introducerar begreppen Subscriber Identity Module
+    (SIM)-banker, User Equipment (UE)-mottagare och tar upp om en
+    medlare av dessa. Tesen i sig gör ingen design av medlaren men
+    presenterar den som slutmålet för arbetet tesen startar.
+
+    Kommunikation mellan bankerna och mottagarna är fördjupade inom
+    där Application Protocol Data Unit (APDU)-vidaresändning lyfts
+    som en väsentlig funktion.
+
+    Ett prototypbaserat tillvägagångssätt till mjukvaruutveckling
+    används för att designa två Raspberry Pi-, SIMtrace 2- och
+    smart card-läsarbaserade enheter. Dessa enheter implementerar
+    ett protokoll för vidaresändning av APDU-paket.
+
+    En utförlig diskussion om framtida arbeten presenteras där
+    experimentering och kravinsamling lyfts. När de delarna har
+    utförts föreslås utförandet av en fullständig
+    systemimplementation.
+  ],
   keywords: [
-    5-10 words, separated by commas, describing the #linebreak()
-    contents of the report
+    Telecommunications, requirements elicitation, coverage testing,
+    #linebreak() protocol design, PC/SC,
   ],
   swedish_keywords: [
-    Här skrivs 5-10 ord, åtskilda med kommatecken, som #linebreak()
-    beskriver rapportens innehåll, ej ord från titeln
+    Telekommunikation, kravinsamling, täckningstestning,
+    #linebreak() protokolldesign, PC/SC,
   ],
   preface: [
-    I'd like to thank Leissner Data AB for the opportunity to implement
-    a novel technical system where much creativity had to be employed.
-    I would also like to thank them for the independence and trust to
-    work in my own way, allowing a thorough attempt at utilizing the
-    skills taught during the computer engineering program. I'm giving a
-    specific thanks to Peter Fässberg for the depths of knowledge he
-    provided during the design and discussions of the implementation.
+    First, I'd like to thank my classmates whom never stumbled in
+    their trust and belief that I'd make it to the other side of
+    this thesis.
 
-    TODO: Thank Hanna, Mikael and possibly others.
+    Second, I'd like to thank Leissner Data AB for the opportunity
+    to implement a novel technical system where much creativity had
+    to be employed. I would also like to thank them for the
+    independence and trust to work in my own way, allowing a
+    thorough attempt at using the skills taught during the
+    computer engineering program. I'm giving a specific thanks to
+    Peter Fässberg for the depths of knowledge he provided during
+    the design and discussions of the prototype.
 
-    An anecdote to illustrate what this report addresses:
-    imagine having a mobile phone in China, and another in Spain. Due
-    to the geographical, political, and historical differences, it is
-    not inconceivable that the mobile networks act differently. In a
-    smaller scale, the same network operator in two different countries
-    may support different functionality based on local laws and
-    agreements with other operators. This means the same mobile device
-    and SIM may have different behaviors based on location. This paper
-    proposes (partly) a way to simplify location-dependent service
-    testing.
-  ],
+    And last, I'd like to thank Hanna Aknouche-Martinsson for her
+    supervision. Without her, the project would be out of scope and
+    never find its way to completion in time. She helped me in
+    deciding what to keep, what to remove and what to change.
+
+    Trollhättan, May 2025
+    #linebreak()
+    Hampus Avekvist
+    ],
   abbreviations: (
     (
-      short: "TEMP",
-      long: "Temporary abbreviation",
+      short: "2G",
+      long: "Second generation telecommunications technology",
+    ),
+    (
+      short: "3G",
+      long: "Third generation telecommunications technology",
+    ),
+    (
+      short: "4G",
+      long: "Fourth generation telecommunications technology",
+    ),
+    (
+      short: "5G",
+      long: "Fifth generation telecommunications technology",
+    ),
+    (
+      short: "SIM",
+      long: "Subscriber Identity Module",
+    ),
+    (
+      short: "USIM",
+      long: "Universal Subscriber Identity Module",
+    ),
+    (
+      short: "UE",
+      long: "User Equipment",
+    ),
+    (
+      short: "APDU",
+      long: "Application Protocol Data Unit",
+    ),
+    (
+      short: "PC/SC",
+      long: "Personal Computer/Smart Card",
+    ),
+    (
+      short: "ISP",
+      long: "Internet Service Provider",
+    ),
+    (
+      short: "PGW",
+      long: "Packet Delivery Network Gateway",
+    ),
+    (
+      short: "SMSC",
+      long: "Short Message Service Center",
+    ),
+    (
+      short: "HSS",
+      long: "Home Subscriber Service",
+    ),
+    (
+      short: "MVNE",
+      long: "Mobile Virtual Network Enabler",
+    ),
+    (
+      short: "MVNO",
+      long: "Mobile Virtual Network Operator",
+    ),
+    (
+      short: "IMSI",
+      long: "International Mobile Subscriber Identifier",
+    ),
+    (
+      short: "SPN",
+      long: "Service Provider Name",
+    ),
+    (
+      short: "PIN",
+      long: "Personal Identification Number",
+    ),
+    (
+      short: "ICCID",
+      long: "Integrated Circuit Card Identifier",
+    ),
+    (
+      short: "ATR",
+      long: "Answer To Reset",
+    ),
+    (
+      short: "ISO",
+      long: "International Organization for Standardization",
+    ),
+    (
+      short: "TCP",
+      long: "Transmission Control Protocol",
+    ),
+    (
+      short: "ATP",
+      long: "APDU and ATP Tunneling Protocol",
+    ),
+    (
+      short: "ICCID",
+      long: "Integrated Circuit Card Identifier",
+    ),
+    (
+      short: "TARA",
+      long: "Threat Assessment and Remediation Analysis",
     ),
   ),
 )
 
 = Introduction <sec:introduction>
 
-Communications technology is rapidly evolving. As telecom standards
-evolve, the networks grow complex. The complexity is affected by
-contracts with third-party telecom service providers, and
-geographical differences affecting mobile mast placement.
-Interoperability and standards' compliance is difficult.
-Subscribers to a telecom service provider expect the networks to be
-reliable, predictable, and fast. They also expect the services to
-be usable when travelling.
-
-Three important keys to ensure the three tenets reliability,
-consistency, and speed, is authentication, authorization, and
-accounting the subscriber's activity. Authentication is used to
-identify the subscriber. Authorization gives the subscriber access
-to the services they pay for. Accounting bookkeeps the subcriber's
-usage for billing and tracking data allowances.
-
-The Subscriber Identity Module (SIM) is a device that stores
-authentication keys and information used by the networks to
-identify and authorize use of telecom services. In nature of the
-information stored on these devices and the complexity of the
-networks, the same SIM in the same device moved to another physical
-location may provide alternate capabilities.
-
-Connectivity is essential for modern society. The ability to keep
-in touch, share knowledge and collaborate remotely is growing
-evermore important. A fundamental group of technologies and
-infrastructure enables these facets, all categorized within the
-telecommunications umbrella. Telecommunication businesses around
-the world compete to provide the best service, while assisting one
-another to enable a greater reach.
+Connectivity is the backbone for modern society. The ability to
+keep in touch, share knowledge and collaborate remotely is growing
+more important. A group of technologies and infrastructure enables
+these facets, all under the telecommunications umbrella.
 
 For a user of these technologies and infrastructure, identification
 is required to ascertain the authenticity and capabilities that
 should be provided. This is provided through a Subscriber Identity
-Module (SIM) @etsi-ts-131-102, a type of smart card
-@etsi-ts-102-221, that stores encryption keys and application files
-utilized to verify the subscriber in the telecommunications
-network. These SIM may have varying support when roaming or if a
-device is 4G- or 5G-enabled.
+Module (SIM) @etsi-ts-131-102, a smart card @etsi-ts-102-221, that
+stores encryption keys and application files used to verify the
+subscriber in the telecommunications network. These SIM may have
+varying support when roaming or if a device is 4G- or 5G-enabled.
 
-Utilities for testing, configuration and manipulation of SIM:s
-serve a purpose in regard to varying support of SIM configurations
-in different telecommunication networks. The utilities shall allow
-user equipment (UE) in arbitrary locations. A bank of SIM in an
-easily (though not unauthorized) accessible office space that
-enables hot-swapping of an SIM connected to different UE best be a
-part of the aforementioned utilities.
+The goal of this work is to develop a prototype for a set of tools
+that include an SIM bank and a user equipment (UE) sink, and
+inspire requirements for a mediation service.
 
-The goal of this work is to develop said utilities that provide an
-SIM bank, user equipment connectivity and a mediation service. The
-mediation service enables pairing of SIM-to-UE with a logical
-hot-swapping facility, rendering physical access to the SIM bank
-only occasionally required rather than consistently.
-
-The report starts off by introducing previous work in this sector,
-formally introducing the problem and then provides necessary theory
-and background information. The second chapter delves into the
-methodology used in the design and implementation, alongside how
-decisions were made and what material that was utilized. It also
-shows the information collection process for relevant technical
-specifications studied, used for the theory and background sections
-in this chapter and the same information that guides the
-implementation.
-
-The third chapter addresses the results with a complete description
-of the implementation alongside diagrams, measurement results from
-the benchmarks and functionality tests described in
-@sec:experimentation. In the fourth chapter, an analysis based on
-the implementation is performed, addressing what could've been done
-differently and how the tools, structure, and method aided in the
-solution for the problem at hand. Ethical considerations are
-provided and in the fifth chapter conclusions are drawn.
+First, the report recounts previous work, introduces the problem
+and then provides relevant theory and background. Second, the
+research methodology and materials used is introduced. Third is the
+results showing prototype implementation and the conducted security
+analysis. Fourth, an analysis based on the results with discussion
+is given and last, conclusions are drawn.
 
 == Background <sec:background>
 
@@ -138,17 +224,21 @@ telecommunications firm from Trollhättan founded in 1969
 @leissner-about. The company was not originally in
 telecommunications but pivoted to an Internet Service Provider
 (ISP) role in 1996 with the founding of the sister company
-Götalandsnätet AB. In 2001 Leissner started offering
-telecommunication systems and has since extended to mobile
-platforms. These mobile platforms are, for example, complete
-virtual mobile core infrastructure such as Packet Delivery Network
-Gateways (PGW:s), Short Message Service Centers (SMSC:s) and Home
-Subscriber Servers (HSS:s) @leissner-mobile-core.
+Götalandsnätet AB.
 
-After a partnership with Hi3G @leissner-about, Leissner became a
-Mobile Virtual Network Enabler (MVNE) and in their product
-catalogue, they sell SIM to the Mobile Virtual Network Operators
-(MVNO). The aforementioned SIM:s is equipped with a digital profile
+In 2001 Leissner started offering telecommunication systems and has
+since extended to mobile platforms. These mobile platforms are, for
+example, a complete virtual mobile core infrastructure such as
+Packet Delivery Network Gateways (PGW), Short Message Service
+Centers (SMSC) and Home Subscriber Servers (HSS)
+@leissner-mobile-core.
+
+After entering a partnership with Hi3G @leissner-about, Leissner
+became a Mobile Virtual Network Enabler (MVNE) and sell SIM as part
+of their product catalogue to Mobile Virtual Network Operators
+(MVNO).
+
+The aforementioned SIM are equipped with a digital profile
 compatible with their systems. These digital profiles are preset
 file structures and contents containing information such as the
 International Mobile Subscriber Identifier (IMSI), Service Provider
@@ -159,154 +249,122 @@ The digital profile may contain files that can be changed
 Personal Identification Number (PIN) as well as files that may not
 be changed, e.g. IMSI and Integrated Circuit Card Identifier
 (ICCID). The design of the digital profiles is up to the agreement
-between SIM supplier and the operator where which files should be
-writeable or not can be decided.
+between SIM supplier and the operator on determining which files
+that should be writable or not.
 
 Considering the aforementioned, a desire for a simplified test
 platform arose. This test platform would allow hot-swapping of SIM
 in a nearby location while having user equipment connecting from a
-remote location, e.g. in another city or at a customer office to
-test reliability and function of the mobile core platform with
-different SIM profiles.
-
-Functionality requested in such a platform include tracing of
-application protocol data units (APDU:s) where the transmitted
-APDU:s may be sniffed, or manipulation where transmitted APDU:s are
-altered to e.g. transform one PIN into another or by changing an
-SPN to something else. Reprogramming of SIM is another requested
-capability which could replace existing software and offer all
-SIM-related functionality inside a single system.
-
-Lastly, support for other kinds of SIM than just physical in a
-smart card reader is requested. This extends to virtual SIM in a
-custom-developed runtime.
+remote location, e.g. in another city or at a customer office. It
+would be able to test reliability and function of the mobile core
+platform with different SIM profiles. The functionality and
+qualities of such a platform is described in
+@sec:problem-formulation.
 
 == Problem formulation <sec:problem-formulation>
 
-The intention of this thesis is to implement a couple of technical
-solutions addressing the requests from Leissner. The requests can
-be dissolved into the following sections.
+#align(center)[
+  #figure(
+    image("images/system-simplified.mmd.png", width: 100%),
+    caption: [
+      Overview of the intended system diagram.
+    ]
+  ) <simplified-system-diagram>
+]
 
-=== Functionality <sec:functionality>
+This thesis answer some, but not all, of the below listed technical
+problems and requests from Leissner. The full solution is a full
+system with SIM banks, UE sinks and a mediator and is out of scope
+of this report. An overview of the system is given by
+@fig:simplified-system-diagram.
 
-Primary requested functionality is the ability to forward APDU:s
-between an SIM and UE. This renders forwarding the initial problem
-to solve and is dependent upon by secondary functionalities.
-Tracing APDU:s and the ability to manipulate APDU:s extend the
-forwarding functionality by either logging or changing the data.
+=== Requested functionality:
+- *APDU forwarding:* This is for transporting APDU packets to and
+  from an SIM to a UE, via an SIM bank and UE sink, optionally
+  passing a mediator.
+- *APDU tracing:* This is for logging information related to the
+  transported APDU such as timing, data contents and SIM. This is
+  out of scope.
+- *APDU manipulation:* This is for changing information carried in
+  the APDU. This is out of scope.
+- *SIM reprogramming:* This generates APDU packets that are sent to
+  an SIM that changes the information stored on the SIM. This is
+  out of scope.
 
-Reprogrammability entails generating APDU:s from an alternative
-source than from user equipment being sent directly to the SIM and
-extends requirements to available functionality in a user
-interface. This is out of scope for this project.
+Only SIM are considered and no other smart card.
 
-=== Scalability <sec:scalability>
-
-Scalability in this case intends on providing an ability to add and
-remove both SIM banks and UE from the system without configuration
-changes in a central service. Both the SIM banks and the UE may be
-in arbitrary locations.
-
-=== Security considerations <sec:security-considerations>
-
-The APDU:s may contain confidential information such as encryption
-keys and identification numbers, normally not exposed due to the
-locality of the SIM inside the UE but in the remote forwarding case
-requiring hiding. Connectivity of the SIM bank and the UE to the
-full system must also be handled in a secure way to not allow any
-device to connect and get APDU delivered.
-
-=== Commercialization <sec:commercialization>
-
-The nature of being able to test mobile core products on different
-SIM profiles is not limited to only the developers of the products
-themselves but also the business customers buying and operating the
-products. Therefore, there is an interest in having a sellable
-service and easily deployed devices a customer can order.
-
-=== Delimitations <sec:delimitations>
-
-Manipulation of APDU:s, due to the added complexity in interface
-design and time constraints will not be considered in this draft.
-Similarly, the ability to reprogram SIM are out of scope for this
-work as that relates to functionality not directly coupled with the
-forwarding of APDU:s to and from an SIM and UE.
-
-Only SIM will be considered in this implementation, excluding
-general smart cards since the work is aimed at telecommunications.
-
-While security considerations are accounted for, safety risks are
-not included in this report.
+=== Requested qualities:
+- *Scalability:* This is the ability to add and remove SIM, SIM
+  banks and UE sinks from the system without configuration changes
+  to the mediator. This process should be handled securely to
+  disallow foreign actors to connect. This is out of scope.
+- *Security:* APDU data may contain confidential information, such
+  as encryption keys and identification numbers. When carried in a
+  remote context, this information must be hidden. This will be
+  analysed but not implemented. Safety risks are out of scope.
+- *Commercial use:* Leissner, as a developer of mobile core
+  products, has an interest in testing different SIM profiles in
+  their core network. Though, the interest is not limited to only
+  Leissner but extend to the business customers that operate their
+  own mobile core networks.
 
 == Previous work <sec:previous-work>
 
-The primary inspiration and function description for this project
-is Osmocom's remSIM project @osmocom-remsim. It is a complete open
-source implementation of an SIM bank with forwarding capabilities to
-user equipment. Osmocom provides a user manual, open hardware and
-source code that is studied for this project's implementation.
+The main inspiration for this project is Osmocom's remSIM project
+@osmocom-remsim. It is an open source implementation of an SIM bank
+with APDU forwarding capabilities. Osmocom provides a user manual,
+open hardware and source code that is used in this project.
 
-There are additional solutions in the field of SIM banks with
-similar capabilities to the Osmocom remSIM and the proposed
-solution described in this document. These solutions, however, are
-proprietary @polygator-sim-bank complete solutions, usually
-offering a cloud service they own
-@placeholder-source-cloud-sim-bank not enabling the capabilities
-required for Leissner's purposes. They may also restrict the
-communications protocol to the SIM bank to a proprietary,
-undocumented protocol rendering implementation difficult.
-
-The existing solutions miss out on some of the requested
-functionality and while they could be extended upon, Leissner aims
-to develop their own solution to have full control of their
-offering. This is due to the proprietary nature of some of the
-solutions, but also licensing issues with the Osmocom remSIM
-solution, having a GPL-2.0 license while Leissner does not want to
-distribute the source code for their products.
+Polygator @polygator-sim-bank and others offer SIM banks but the
+products are too restrictive and incapable for Leissner's purposes.
+The communications protocols when communicating with the SIM bank
+may be proprietary and documentation unavailable.
 
 == Theory <sec:theory>
 
-This section intends to elaborate on the necessary theory to
-understand the utilization of SIM in the context of the
-implementation and the related nomenclature.
+This section elaborates on the necessary theory to understand the
+use of SIM and how it relates to the implementation. 
 
 === Nomenclature <sec:nomenclature>
 
-Definitions and descriptions of terminology commonly used in this
-report are provided here. A word is explicitly stated if it has a
-specific definition in regards to this document.
+Definitions and descriptions of terminology used in the report are
+provided here. A word is defined if it has a specific definition in
+regards to this document or if the term carries extra relevance.
 
 ==== User Equipment <sec:user-equipment>
 
-User Equipment (UE) is what in regular telecommunication contexts
+User Equipment (UE) is in regular telecommunication contexts what
 may be used by a human, e.g. a mobile phone or wireless modems.
 They may also be called mobile equipment or mobile stations.
 
-==== Subscriber Identity Module <sec:subscriber-identity-module>
+==== Universal Subscriber Identity Module <sec:subscriber-identity-module>
 
-A SIM is a type of smart card utilized for the telecommunications
-sector @etsi-ts-131-102. Historically it was called SIM during the
-prime of 2G, but a later revision called Universal SIM (USIM) with
-3G @etsi-ts-131-102 support was developed. USIM also enable 4G and
-5G support given an appropriate digital profile. While USIM may be
-the correct term, SIM will be used in its place, though
-colloquially mean USIM.
+A USIM is a smart card used for telecommunications @etsi-ts-131-102.
+USIM was historically called SIM during 2G but SIM was superseded
+by Universal SIM when 3G support was developed @etsi-ts-102-221.
+A USIM enable 4G and 5G support given the appropriate digital
+profile. It will be referred to SIM throughout this paper.
 
-A SIM is used to provide authentication capabilities by storing
-encrypted keys and identification files within a telecommunications
-application @etsi-ts-131-102. The SIM authenticates a specific
-subscriber and their capabilities in a mobile network.
+An SIM provides authentication capabilities for a single subscriber
+by storing encryption keys and identification files within a
+telecommunications application @etsi-ts-131-102.
 
 ==== Application Protocol Data Unit
 <sec:application-protocol-data-unit>
 
-Application Protocol Data Units (APDU:s) are the application-level
-communications protocol, residing on top of the transport layer of
+Application Protocol Data Units (APDU) are the application-level
+communications protocol residing on top of the transport layer of
 a smart card and terminal interface @etsi-ts-102-221. These may be
-file selections in the smart card, file reads, writes or some other
-operation supported by the smart card @etsi-ts-102-221.
+file selections in the smart card, file reads, writes, or some other
+operation supported by the card and terminal @etsi-ts-102-221.
 
 ==== SIM bank, SIM box or SIM farm <sec:sim-bank>
+
+An SIM bank is a server of multiple SIM. It may be used by a
+consuming service to either connect to multiple operators or
+multiple configurations to a singular operator. One or more
+consuming services may be connected @hyprms-sim-bank. An
+illustrated SIM bank is given by @fig:sim-bank. 
 
 #align(center)[
   #figure(
@@ -318,38 +376,28 @@ operation supported by the smart card @etsi-ts-102-221.
   ) <sim-bank>
 ]
 
-A SIM bank is a device that provides connectivity to multiple SIM
-simultaneously @hyprms-sim-bank. This may be used for connecting to
-multiple operators or to have different SIM configurations from a
-singular operator. One or more devices may connect to the bank and
-choose which SIM to use, from which the devices can act as user
-equipment.
-
-The terms SIM bank, box and farm all refer to the same thing and
+The terms SIM bank, box, and farm all refer to the same thing and
 may be used interchangeably. Different sources use the different
 phrases but SIM bank will used in this paper.
 
-==== SIM consumer <sec:sim-consumer>
+==== UE sink <sec:ue-sink>
 
-SIM consumer in relation to this work is the device that receives
-forwarded APDU:s from a remote SIM bank. It is also this device
-that is connected to user equipment and therefore forwards the
-received APDU:s to the UE.
+A UE sink is a device that is connected to a UE and may receive
+APDU. These APDU may also be forwarded to the UE.
 
 ==== Mediator <sec:mediator>
 
-The mediator is in this paper the service that manages connections
-between SIM:s in the SIM bank and ties them to an SIM consumer. It
-manages Answer To Resets (ATR:s) for each SIM so user equipment can
-identify the type of card upon connection establishment. Alongside
-ATR:s, it forwards APDU:s to support tracing and manipulation
-capabilities.
+The mediator is a middle-man service that manages connections
+between SIM in the SIM bank and links them to a UE sink. It manages
+Answer To Resets (ATR) for each SIM so UE can identify the card on
+connection. The mediator also forwards, traces, and allows
+manipulation of APDU.
 
 === Requirements engineering <sec:requirements-engineering>
 
-This section cites from Sommerville's work Software Engineering
+This section cites Sommerville's seminal work Software Engineering
 @sommerville-software-engineering. Requirements engineering is the
-craft of finding, defining, validating and changing requirements
+craft of finding, defining, validating, and changing requirements
 for the solution of a problem. Requirements grow and change
 alongside the lifecycle of a project and requirements engineering
 is a formalization of how the process works. Requirements can be
@@ -358,227 +406,41 @@ requirements specify what a system should do while non-functional
 requirements specify peripheral qualities of the system, such as
 implementation constraints, response time and interface design.
 
-The first step is elicitation, which includes gathering of
-requirements from stakeholders, establishing the kind of
-requirement, prioritizing and informally documenting said
-requirement. Stakeholders are people with legitimate interest in
-the system in question, accounting for members of the development
-team, customers, operational staff and others that are directly
-involved or affected by the system. 
-
-The second step is specification. This entails writing formal or
-more technical specifications with additional details relevant to
-the implementers but not all stakeholders. Formalizations may take
-different appearances, as shown in figure 4.11 in
-@sommerville-software-engineering where natural language, both in
-unstructured and structured form, graphical notations and
-mathematical models are examples of formalizations.
-
-The third step is validation of the requirements. This means
-testing the requirements for validity, consistency, completeness,
-realism and verifiability. The step is vital to ascertain the
-requirements are correct in the scope of the problem at hand and
-that a proposed solution fulfilling the requirements also solves
-the problem.
-
-The last step is the change of requirements, specifically
-management of changes. Letting requirements change is important
-because new insights, knowledge and changes in the surroundings
-spring up which affect the problem space. Key points in managing
-changes is to provide traceability, which entails tracking of
-relevant stakeholders for a requirement, how the requirement has
-changed and why. The relationships between requirements need also
-be tracked to identify peripheral changes when a requirement is
-updated.
++ *Elicitation* #linebreak() Elicitation includes gathering of
+  requirements from stakeholders, establishing the kind,
+  prioritizing and informally documenting said requirement.
+  Stakeholders are people with legitimate interest in the system,
+  accounting for members of the development team, customers,
+  operational staff and others that are directly involved or
+  affected by the system. 
++ *Specification* #linebreak() This entails formal or more
+  technical specifications with details relevant to the
+  implementers but not all stakeholders. Formalizations may take
+  different appearances, as shown in figure 4.11 in
+  @sommerville-software-engineering where natural language, both in
+  unstructured and structured form, graphical notations and
+  mathematical models are examples.
++ *Validation* #linebreak() This means testing the validity,
+  consistency, completeness, realism and verifiability of
+  requirements. The step is vital to ascertain correctness in the
+  scope of the problem at hand and that a proposed solution
+  fulfilling the requirements also solves the problem.
++ *Change* #linebreak() This specifically targets management of
+  changes. Letting requirements change is important because new
+  insights, knowledge, and changes in the surroundings spring up
+  which affect the problem space. Key points in managing changes is
+  to provide traceability, which entail the tracking of relevant
+  stakeholders for a requirement, how the requirement has changed
+  and why. The relationships between requirements need also be
+  tracked to identify peripheral changes when a requirement is
+  updated.
 
 = Methodology <sec:methodology>
 
-This chapter elaborates on the material, equipment and methods used
-to derive a solution to the problem statements in
-@sec:problem-formulation.
+This chapter elaborates on the material, equipment, and methods
+used to design a prototype for forwarding APDU packets.
 
 == Materials and equipment <sec:materials>
-
-#align(center)[
-  #figure(
-    image("images/system-simplified.mmd.png", width: 100%),
-    caption: [
-      Overview of the intended system diagram.
-    ]
-  ) <simplified-system-diagram>
-]
-
-This section lists the equipment, material and tools used in the
-implementation. @fig:simplified-system-diagram shows how the
-majority of the physical components are connected.
-
-=== SIMtrace 2 <sec:materials:simtrace>
-
-The SIMtrace 2 by Osmocom is an open hardware platform with open
-source software @simtrace. It comes preloaded with SIM tracing
-firmware called `trace` @simtrace-wiki but additional firmware for
-smart card emulation exists, provided by Osmocom. This firmware is
-called `cardem` @simtrace-wiki and is used for communicating with
-user equipment, sending APDU:s either constructed by software or
-forwarded from a remotely accessed smart card. The hardware is
-capable of tracing and emulating all kinds of ISO 7816
-@etsi-ts-102-221 smart cards when the T=0 protocol is used
-@simtrace-wiki but the focus is on SIM.
-
-=== Raspberry Pi 4 <sec:materials:raspberry-pi>
-
-Two Raspberry Pi 4 units are used due to the ubiquity and
-portability of the hardware platform. The main computer
-requirements based on the proposed system are two Linux-based
-devices with USB and IP network connectivity capabilities,
-rendering most computer systems a viable choice where the choice of
-Raspberry Pi is due to the small form factor, inexpensive hardware
-and lower power drain, though none of those properties are a
-requirement.
-
-=== Teltonika RUT200 v2.0 <sec:materials:teltonika>
-
-The Teltonika RUT200 v2.0 is used as provisional user equipment the
-SIMtrace 2 hardware running `cardem` connects to, meaning the
-receiver of forwarded APDU:s from a remotely accessed smart card.
-The device provides 2G, 3G and 4G capabilities for mobile network
-connectivity, authenticated to via the remotely accessed smart card
-and has a WiFi and Ethernet interface allowing wired and wireless
-connections and internet access, acting as a gateway between the
-mobile network and the local network.
-
-=== Smart card readers, SIM, server, and router
-<sec:materials:miscellaneous>
-
-Generic physical smart card readers are used for enabling access to
-smart cards for the Raspberry Pi which will forward communications
-from the smart card over IP to a destination device, e.g. a server
-or a peer Raspberry Pi connected to an SIMtrace unit and user
-equipment.
-
-A server, virtual or not, is used as a central connectivity hub
-enabling rerouting of SIM-to-UE communication to a either a
-different UE or a different SIM. A basic router will be used to
-provide IP network access for the Raspberry Pi and internet access
-to the aforementioned connectivity hub.
-
-=== Automated tooling <sec:materials:automated-tooling>
-
-Tools for documentation generation will be utilized, both for
-automatic generation of changelogs that document available
-functionality in an operational perspective but also tools that
-generate software library documentation from code comments.
-Examples of such tools are Doxygen @doxygen for software library
-documentation generation and git-cliff @git-cliff for changelog
-generation.
-
-To enable changelog generation, git-cliff requires a consistent
-format of git commits @git-cliff called Conventional Commits
-@conventional-commits. This, using git-cliff also enables automatic
-version numbering @git-cliff-bump-version by following the Semantic
-Versioning (SemVer) specification @semver. If required, additional
-commit types will be created and documented with custom git parsers
-added to git-cliff @git-cliff-tips-and-tricks.
-
-Automated testing will be conducted to ensure that requirements are
-upheld. The testing will be implemented using GoogleTest
-@googletest and Google Mock @googletest. The tests will run on the
-continuous integration/continuous deployment (CI/CD) platform
-GitHub Actions @github-actions to ensure that no regressions have
-been committed. Google Test will be used for authoring of tests and
-Google Mock is utilized for mocks used by the tests.
-
-Performance regressions will be detected by the use of automated
-benchmarking. The primary implementation will be via Google's
-microbenchmark support library @google-benchmark for smaller units
-and `perf` @perf will be used for full application benchmarking if
-necessary. `perf` will, however, not be automated.
-
-== Prototype development <sec:prototype-development>
-
-The initial development is for explorative purposes, to create a
-prototype @sommerville-software-engineering
-@thomas-hunt-pragmatic-programmer where ideas lead to requirements,
-what to test for in the benchmarking and functionality experiment
-listed in @sec:experimentation which alongside the TARA explained
-in @sec:methodology:tara drives the decisions behind the final
-implementation. Requirements engineering and experimentation,
-elaborated on below, will use knowledge acquired in the prototyping
-phase while also themselves provide additional information that can
-sprout new concepts to initially implement in the prototype before
-adding to the final implementation.
-
-The prototype, as shown in @fig:prototype-diagram, only requires
-the functionality for communication between the two Raspberry Pi:s
-used, while being restricted to only a singular SIM and singular
-UE. The communication protocol between the two computers is a
-simple insecure protocol on top of TCP instead of anything that may
-be proposed in the TARA. The security considerations are not as
-important in the lab environment the prototype is developed within
-and has no customer-sensitive information, allowing an insecure
-communications protocol.
-
-== Threat assessment and remediation analysis
-<sec:methodology:tara>
-
-The threat assessment and remediation analysis (TARA) @tara
-directly responds to the security considerations in
-@sec:problem-formulation by, alongside STRIDE @stride, providing an
-analytical framework to identify and classify security risks. The
-TARA is conducted on the intended system overview shown in
-@fig:simplified-system-diagram.
-
-== Software requirements engineering
-<sec:software-requirements-engineering>
-
-Requirements elicitation will be used in tandem with the prototype
-development and experimentation to narrow down and define what the
-final product should look like. Specification of requirements will
-use the collected knowledge and experience from prototyping and
-experimentation both in structured natural language
-@sommerville-software-engineering, as well as automated tests where
-possible @test-cases-as-requirements. Validation will happen in
-accordance with the following sections and change management will
-be handled by version control management (using `git` @git) and
-structured documents listing stakeholders, what and why, as well as
-assigning a requirement identifier to each requirement. By using
-`git`, each commit can contain relevant information on why a
-requirement was changed.
-
-=== Compilation of specifications
-<sec:compilation-of-specifications>
-
-Aside from the requirements for the software solution, the
-specifications @etsi-ts-102-221, @etsi-ts-131-102 themselves pose
-practical requirements for a functional system. Therefore, they are
-an additional source of non-functional requirements. Following the
-specifications also provide a validation angle for the authored
-requirements.
-
-=== Existing solutions and usage <sec:existing-solutions>
-
-Existing solutions such as @osmocom-remsim provide knowledge to
-compare with regarding how to solve the fundamental functional
-requirements aiding in validation of the system requirements. The
-existing material may also provide additional information not found
-in the specifications, giving a fuller picture of system
-requirements.
-
-= Results <sec:results>
-
-The following sections provide the deliverables. The results may be
-used for further work in authoring requirements and inspiring
-future solutions, but they are not for production grade
-applications.
-
-== Prototype <sec:results:prototype>
-
-The prototype is implemented in two parts: the SIM-bank and the
-UE-sink, as shown in @prototype-diagram. The bank uses the PC/SC
-abstraction for C++ provided by @electronic-id. The sink uses the
-SIMtrace2 and Osmocom core libraries @simtrace-library
-@osmocom-osmocore for communication with and management of the
-SIMtrace2 device and UE.
 
 #align(center)[
   #figure(
@@ -589,8 +451,94 @@ SIMtrace2 device and UE.
   ) <prototype-diagram>
 ]
 
-The prototype has support for SIM-bank to UE-sink communication;
-though, the UE-sink has no ability to communicate with the UE
+This section lists the equipment, materials, and tools used in the
+prototype. @fig:prototype-diagram shows how the of the physical
+components are connected.
+
+=== SIMtrace 2 <sec:materials:simtrace>
+
+The SIMtrace 2 is designed by Osmocom and is an open hardware
+platform with open source software @simtrace. It comes preloaded
+with SIM tracing firmware called `trace` @simtrace-wiki but
+additional firmware for smart card emulation exists, provided by
+Osmocom. This firmware is called `cardem` @simtrace-wiki and is
+used for communicating with user equipment, sending APDU packets
+either constructed by software or forwarded from a remotely
+accessed smart card. The hardware is capable of tracing and
+emulating all kinds of ISO 7816 @etsi-ts-102-221 smart cards when
+the T=0 protocol is used @simtrace-wiki but the focus is on SIM.
+
+=== Raspberry Pi 4 <sec:materials:raspberry-pi>
+
+Two Raspberry Pi 4 units are used because of their ubiquity. Any
+modern computer running Linux is a viable choice but Raspberry Pi
+are small, inexpensive and have a lower power drain.
+
+=== Teltonika RUT200 v2.0 <sec:materials:teltonika>
+
+This is used as user equipment the SIMtrace hardware running
+`cardem` connects to and will therefore receive APDU packets. The
+device provides 2G, 3G and 4G capabilities for mobile network
+connectivity, the networks of which are authenticated to via the
+remotely accessed smart card. It has a WiFi and Ethernet interface
+allowing wired and wireless connections and internet access, acting
+as a gateway between the mobile network and the local network.
+
+=== Smart card readers, SIM, and router
+<sec:materials:miscellaneous>
+
+A Gemalto smart card reader is used where any PC/SC-compatible
+would suffice. The smart card reader is connected to a Raspberry Pi
+and provides access to a smart card. The APDU from the smart card
+may be forwarded over IP to a destination device, in this case the
+UE sink.
+
+Leissner-provided SIM with a provisioned subscription are used
+where any SIM would suffice. A basic router is used to provide IP
+network access for the Raspberry Pi.
+
+== Prototype implementation <sec:prototype-development>
+
+The prototype @sommerville-software-engineering
+@thomas-hunt-pragmatic-programmer is for exploring the technical
+problems, and eliciting requirements to be used in future work.
+Since only APDU forwarding is in scope, @fig:prototype-diagram is
+the smallest design that tests the function. It entails the design
+of a protocol that carries APDU information between the smart card
+reader and the SIMtrace device.
+
+The security considerations addressed by @sec:methodology:tara are
+irrelevant in the prototype because it is set up in a laboratory
+environment without external network access.
+
+== Threat assessment and remediation analysis
+<sec:methodology:tara>
+
+The threat assessment and remediation analysis (TARA) @tara
+responds to the security considerations in @sec:problem-formulation
+by, with the help of STRIDE @stride, providing an analytical
+framework to identify and classify security risks. The TARA is
+conducted on the intended system overview shown in
+@fig:simplified-system-diagram to elicit requirements.
+
+= Results <sec:results>
+
+The following sections provide the deliverables. The results may be
+used for further work in authoring requirements and inspiring
+future solutions, but they are not for production grade
+applications.
+
+== The prototype <sec:results:prototype>
+
+This is implemented in two parts: the SIM bank and the UE sink, as
+shown in @fig:prototype-diagram. The bank uses the PC/SC abstraction
+for C++ provided by @electronic-id. The sink uses the SIMtrace 2 and
+Osmocom core libraries @simtrace-library @osmocom-osmocore for
+communication with and management of the SIMtrace 2 device and UE.
+The implementation is available on GitHub @source.
+
+The prototype has support for SIM bank to UE sink communication;
+though, the UE sink has no ability to communicate with the UE
 itself. The library and tools available from Osmocom were
 nontrivial to integrate and mentioned @osmocom-limitations
 limitations in pre-made firmware was incompatible with the use case
@@ -638,51 +586,45 @@ disconnected. The last type is used for halting the connection.
 
 = Analysis/Discussion <sec:analysis>
 
-== Ethical considerations <sec:ethical-considerations>
+The prototype succeeded in what it set out to do; it forwards
+APDU packets from an SIM to a UE. The UE, however, lacks in its
+response due to a limitation in the firmware it has installed. This
+firmware limitation is mentioned in @osmocom-limitations but
+writing a patch for the problem is out of scope for this thesis.
 
-Idea: Criminal utilization, e.g. @alghawi-simbox.
+The ATP protocol is designed with longevity in mind. This is
+technically not a necessity for this purpose since the requirements
+of long-term compliance with mixed versions is low when the service
+is hosted by a singular company. It may serve a purpose if the
+protocol design is openly available. Then, customers could
+implement their own SIM banks, UE sinks or mediators and only buy
+the component they wanted.
 
-= Conclusions <sec:conclusions>
+The prototype aimed for APDU forwarding as the core function
+because it is the core of the system. APDU tracing, manipulation,
+or SIM reprogramming serve no purpose if no APDU packets can be
+transferred over the network. This leads into discussing potential
+future work.
 
-== Future work <sec:future-work>
+To remain in line with thorough software engineering practices
+@sommerville-software-engineering, additional prototyping for the
+aforementioned features may be conducted. Additionally, experiments
+of the functionality in different programming languages can provide
+insight on what languages are most optimal for the problem at hand.
 
-=== Experimentation <sec:experimentation>
-
-In tandem with prototyping, experiments testing multiple
-implementations of the PC/SC @pcsc library in different programming
-languages have been conducted. The experiments are to guide
-technical decisions for what language to use depending on which
-implementation that fulfills requirements for communications with
-smart cards. Four languages were chosen, JavaScript (on NodeJS) and
-Python, to compare two higher-level languages, as well as C++ and
-Rust to compare two lower-level languages.
-
-The experiments test the performance and ability to communicate
-with multiple smart cards at the same time, when transmitting
-multiple APDU:s in quick succession.
-
-Idea: Elaborate on what will be tested and what measurements will
-be taken and why.
-
-Note: This section is a stub and needs additional information.
-
-=== Implementation <sec:implementation>
-
-As already mentioned in chapter
-@sec:software-requirements-engineering, tests will be used to
-ensure requirements are being upheld. This leads swiftly into a
-test-driven development approach @sommerville-software-engineering
-while system design will be based around the non-functional
-requirements. The process is iterative as mentioned in the previous
-sections and shown in @fig:process-diagram, where new findings in
-the prototyping or experimentation stages drive changes in the main
-implementation. The implementation step will equally drive a need
-to return to the prototype, experimentation, and a change of
-requirements.
+The prototype in this report was implemented in C++ first because
+that is one of the primary languages used at Leissner and second
+because it could integrate with the PC/SC and Osmocom libraries.
+Experiments in other languages should take library availability in
+consideration, but also compare compiled languages like C++ and
+Rust, with interpreted languages like JavaScript and Python. With
+sensible measurements, this may provide insights on ergonomics,
+performance bottlenecks, and different solution designs for the
+main problem at hand.
 
 #align(center)[
   #figure(
-    image("images/process.mmd.png", width: 50%),
+    image("images/process.mmd.png", width: 40%),
     caption: [
       The iterative development process. The dashed lines implies
       an optional order of execution
@@ -690,8 +632,27 @@ requirements.
   ) <process-diagram>
 ]
 
-Throughout development, designs decisions are documented in
-architectural decision records (ADR:s) @adr @adr-github that
-contain related requirements. Said ADR:s will be structured,
-describing what ideas were considered, which one was chosen and why
-to allow historical transparency in the system design.
+Other future work is to base requirements specifications on this
+paper and formalize a final design to be implemented. This should
+take an iterative approach because of the nature of requirements
+and how they may change over time. Akin to @fig:process-diagram.
+The figure takes into mind that previously finished work, in this
+report, may need alteration.
+
+To keep in line with the documented nature of the approach so far,
+a system implementation may adopt automated tooling such as
+changelog generation @git-cliff, documentation generation from code
+comments @doxygen, and architectural decision records (ADR) @adr. 
+
+There were difficulties in getting `xmake` to build the Osmocom
+libraries since they use their own build scripts instead of
+commonly used Cmake or others. This led to requiring to install the
+binaries with the system package manager and mark them as
+system-only in `xmake`.
+
+= Conclusions <sec:conclusions>
+
+With plenty of additional work available, the prototype succeeded
+in its goal of being able to forward APDU packets. With a protocol
+designed for managing SIM and UE state future work has a baseline
+to expand upon.
