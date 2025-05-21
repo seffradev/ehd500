@@ -184,10 +184,6 @@
       short: "ICCID",
       long: "Integrated Circuit Card Identifier",
     ),
-    (
-      short: "TARA",
-      long: "Threat Assessment and Remediation Analysis",
-    ),
   ),
 )
 
@@ -213,9 +209,9 @@ inspire requirements for a mediation service.
 First, the report recounts previous work, introduces the problem
 and then provides relevant theory and background. Second, the
 research methodology and materials used is introduced. Third is the
-results showing prototype implementation and the conducted security
-analysis. Fourth, an analysis based on the results with discussion
-is given and last, conclusions are drawn.
+results showing prototype implementation. Fourth, an analysis based
+on the results with discussion is given and last, conclusions are
+drawn.
 
 == Background <sec:background>
 
@@ -507,20 +503,6 @@ the smallest design that tests the function. It entails the design
 of a protocol that carries APDU information between the smart card
 reader and the SIMtrace device.
 
-The security considerations addressed by @sec:methodology:tara are
-irrelevant in the prototype because it is set up in a laboratory
-environment without external network access.
-
-== Threat assessment and remediation analysis
-<sec:methodology:tara>
-
-The threat assessment and remediation analysis (TARA) @tara
-responds to the security considerations in @sec:problem-formulation
-by, with the help of STRIDE @stride, providing an analytical
-framework to identify and classify security risks. The TARA is
-conducted on the intended system overview shown in
-@fig:simplified-system-diagram to elicit requirements.
-
 = Results <sec:results>
 
 The following sections provide the deliverables. The results may be
@@ -581,8 +563,6 @@ The protocol contains four message types: `APDU`, `ATR`,
 payload is APDU data. The second is to denote ATR data payload. The
 third is to inform the UE that the previously inserted card is
 disconnected. The last type is used for halting the connection.
-
-== Threat analysis <sec:result:tara>
 
 = Analysis/Discussion <sec:analysis>
 
