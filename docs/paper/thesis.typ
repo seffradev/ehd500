@@ -2,11 +2,12 @@
 
 #show: thesis.with(
   [
-    Physically separated SIM- and UE-connectivity device
-    prototypes
+    Physically separated Subscriber Identity Module- and User
+    Equipment connectivity device prototypes
   ],
   [
-    Fysiskt separerade SIM- och UE-konnektivitetsenhetsprototyper
+    Fysiskt separerade Subscriber Identity Module- och User
+    Equipment-konnektivitetsenhetsprototyper
   ],
   authors: (
     (
@@ -18,13 +19,16 @@
   abstract: [
     This paper introduces the concept of Subscriber Identity Module
     (SIM) banks, User Equipment (UE) sinks and discuss a mediator
-    of these. The thesis itself doesn't design the mediator but
-    presents it as the end-goal of the work the thesis starts.
+    of these. Leissner Data AB, a Swedish telecommunications
+    company, requests the pre-study, planning, and implementation of
+    the three aforementioned components. The thesis itself does not
+    provide a design of the mediator but presents it as the
+    end-goal of the work the thesis starts.
 
     Communication between the banks and sinks are discussed where
     specifically forwarding of Application Protocol Data Units
-    (APDU) is highlighted as an essential function to be
-    implemented.
+    (APDU) and Answer To Resets (ATR) is highlighted as an
+    essential function to be implemented.
 
     A prototype-based software engineering approach is employed in
     designing two devices based on Raspberry Pi, SIMtrace 2 and
@@ -39,12 +43,15 @@
   swedish_abstract: [
     Denna uppsats introducerar begreppen Subscriber Identity Module
     (SIM)-banker, User Equipment (UE)-mottagare och tar upp om en
-    medlare av dessa. Tesen i sig gör ingen design av medlaren men
-    presenterar den som slutmålet för arbetet tesen startar.
+    medlare av dessa. Leissner Data AB, ett svenskt
+    telekommunikationsbolag, efterfrågar en förstudie, planering
+    och implementationen av de tre ovannämnda komponenterna. Tesen
+    i sig gör ingen design av medlaren men presenterar den som
+    slutmålet för arbetet tesen startar.
 
-    Kommunikation mellan bankerna och mottagarna är fördjupade inom
-    där Application Protocol Data Unit (APDU)-vidaresändning lyfts
-    som en väsentlig funktion.
+    Kommunikation mellan bankerna och mottagarna är fördjupade
+    inom, där Application Protocol Data Unit (APDU)- och Answer To
+    Reset (ATR)-vidaresändning lyfts som en väsentlig funktion.
 
     Ett prototypbaserat tillvägagångssätt till mjukvaruutveckling
     används för att designa två Raspberry Pi-, SIMtrace 2- och
@@ -78,6 +85,10 @@
     Peter Fässberg for the depths of knowledge he provided during
     the design and discussions of the prototype.
 
+    Third, I extend my thanks to my supervisor Mikael Johansson at
+    Leissner Data AB for the support, encouragement and thoughtful
+    discussions when I was stuck and struggled.
+
     And last, I'd like to thank Hanna Aknouche-Martinsson for her
     supervision. Without her, the project would be out of scope and
     never find its way to completion in time. She helped me in
@@ -88,102 +99,29 @@
     Hampus Avekvist
     ],
   abbreviations: (
-    (
-      short: "2G",
-      long: "Second generation telecommunications technology",
-    ),
-    (
-      short: "3G",
-      long: "Third generation telecommunications technology",
-    ),
-    (
-      short: "4G",
-      long: "Fourth generation telecommunications technology",
-    ),
-    (
-      short: "5G",
-      long: "Fifth generation telecommunications technology",
-    ),
-    (
-      short: "SIM",
-      long: "Subscriber Identity Module",
-    ),
-    (
-      short: "USIM",
-      long: "Universal Subscriber Identity Module",
-    ),
-    (
-      short: "UE",
-      long: "User Equipment",
-    ),
-    (
-      short: "APDU",
-      long: "Application Protocol Data Unit",
-    ),
-    (
-      short: "PC/SC",
-      long: "Personal Computer/Smart Card",
-    ),
-    (
-      short: "ISP",
-      long: "Internet Service Provider",
-    ),
-    (
-      short: "PGW",
-      long: "Packet Delivery Network Gateway",
-    ),
-    (
-      short: "SMSC",
-      long: "Short Message Service Center",
-    ),
-    (
-      short: "HSS",
-      long: "Home Subscriber Service",
-    ),
-    (
-      short: "MVNE",
-      long: "Mobile Virtual Network Enabler",
-    ),
-    (
-      short: "MVNO",
-      long: "Mobile Virtual Network Operator",
-    ),
-    (
-      short: "IMSI",
-      long: "International Mobile Subscriber Identifier",
-    ),
-    (
-      short: "SPN",
-      long: "Service Provider Name",
-    ),
-    (
-      short: "PIN",
-      long: "Personal Identification Number",
-    ),
-    (
-      short: "ICCID",
-      long: "Integrated Circuit Card Identifier",
-    ),
-    (
-      short: "ATR",
-      long: "Answer To Reset",
-    ),
-    (
-      short: "ISO",
-      long: "International Organization for Standardization",
-    ),
-    (
-      short: "TCP",
-      long: "Transmission Control Protocol",
-    ),
-    (
-      short: "ATP",
-      long: "APDU and ATP Tunneling Protocol",
-    ),
-    (
-      short: "ICCID",
-      long: "Integrated Circuit Card Identifier",
-    ),
+    ( short: "2G", long: "Second generation telecommunications technology",),
+    ( short: "3G", long: "Third generation telecommunications technology",),
+    ( short: "4G", long: "Fourth generation telecommunications technology",),
+    ( short: "5G", long: "Fifth generation telecommunications technology",),
+    ( short: "APDU", long: "Application Protocol Data Unit",),
+    ( short: "ATP", long: "APDU and ATR Tunneling Protocol",),
+    ( short: "ATR", long: "Answer To Reset",),
+    ( short: "HSS", long: "Home Subscriber Service",),
+    ( short: "ICCID", long: "Integrated Circuit Card Identifier",),
+    ( short: "IMSI", long: "International Mobile Subscriber Identifier",),
+    ( short: "ISO", long: "International Organization for Standardization",),
+    ( short: "ISP", long: "Internet Service Provider",),
+    ( short: "MVNE", long: "Mobile Virtual Network Enabler",),
+    ( short: "MVNO", long: "Mobile Virtual Network Operator",),
+    ( short: "PC/SC", long: "Personal Computer/Smart Card",),
+    ( short: "PGW", long: "Packet Delivery Network Gateway",),
+    ( short: "PIN", long: "Personal Identification Number",),
+    ( short: "SIM", long: "Subscriber Identity Module",),
+    ( short: "SMSC", long: "Short Message Service Center",),
+    ( short: "SPN", long: "Service Provider Name",),
+    ( short: "TCP", long: "Transmission Control Protocol",),
+    ( short: "UE", long: "User Equipment",),
+    ( short: "USIM", long: "Universal Subscriber Identity Module",),
   ),
 )
 
@@ -202,16 +140,16 @@ stores encryption keys and application files used to verify the
 subscriber in the telecommunications network. These SIM may have
 varying support when roaming or if a device is 4G- or 5G-enabled.
 
-The goal of this work is to develop a prototype for a set of tools
-that include an SIM bank and a user equipment (UE) sink, and
-inspire requirements for a mediation service.
+The goal of this work is to develop a pair of prototypes for a set
+of tools that include an SIM bank and a user equipment (UE) sink,
+and inspire requirements for a mediation service.
 
 First, the report recounts previous work, introduces the problem
 and then provides relevant theory and background. Second, the
 research methodology and materials used is introduced. Third is the
-results showing prototype implementation. Fourth, an analysis based
-on the results with discussion is given and last, conclusions are
-drawn.
+results showing the prototypes implementation. Fourth, an analysis
+based on the results with discussion is given and last, conclusions
+are drawn.
 
 == Background <sec:background>
 
@@ -241,12 +179,12 @@ International Mobile Subscriber Identifier (IMSI), Service Provider
 Name (SPN) and encryption keys.
 
 The digital profile may contain files that can be changed
-@placeholder-source-for-smart-card-profiles, e.g. the SPN or the
-Personal Identification Number (PIN) as well as files that may not
-be changed, e.g. IMSI and Integrated Circuit Card Identifier
-(ICCID). The design of the digital profiles is up to the agreement
-between SIM supplier and the operator on determining which files
-that should be writable or not.
+@gsmts-11-11, e.g. the SPN or the Personal Identification Number
+(PIN) as well as files that may not be changed, e.g. IMSI and
+Integrated Circuit Card Identifier (ICCID). The design of the
+digital profiles is up to the agreement between SIM supplier and
+the operator on determining which files that should be writable or
+not.
 
 Considering the aforementioned, a desire for a simplified test
 platform arose. This test platform would allow hot-swapping of SIM
@@ -263,7 +201,7 @@ qualities of such a platform is described in
   #figure(
     image("images/system-simplified.mmd.png", width: 100%),
     caption: [
-      Overview of the intended system diagram.
+      Overview of a suggested system diagram.
     ]
   ) <simplified-system-diagram>
 ]
@@ -275,34 +213,37 @@ of this report. An overview of the system is given by
 @fig:simplified-system-diagram.
 
 === Requested functionality:
+
 - *APDU forwarding:* This is for transporting APDU packets to and
   from an SIM to a UE, via an SIM bank and UE sink, optionally
   passing a mediator.
 - *APDU tracing:* This is for logging information related to the
-  transported APDU such as timing, data contents and SIM. This is
-  out of scope.
+  transported APDU such as timing, data contents and SIM.
 - *APDU manipulation:* This is for changing information carried in
-  the APDU. This is out of scope.
+  the APDU.
 - *SIM reprogramming:* This generates APDU packets that are sent to
-  an SIM that changes the information stored on the SIM. This is
-  out of scope.
+  an SIM that changes the information stored on the SIM.
 
-Only SIM are considered and no other smart card.
+Only SIM are considered and no other kind of smart card. Only APDU
+forwarding will be considered for the prototype.
 
 === Requested qualities:
+
 - *Scalability:* This is the ability to add and remove SIM, SIM
   banks and UE sinks from the system without configuration changes
   to the mediator. This process should be handled securely to
-  disallow foreign actors to connect. This is out of scope.
+  disallow foreign actors to connect.
 - *Security:* APDU data may contain confidential information, such
   as encryption keys and identification numbers. When carried in a
-  remote context, this information must be hidden. This will be
-  analysed but not implemented. Safety risks are out of scope.
+  remote context, this information must be hidden.
 - *Commercial use:* Leissner, as a developer of mobile core
   products, has an interest in testing different SIM profiles in
   their core network. Though, the interest is not limited to only
   Leissner but extend to the business customers that operate their
-  own mobile core networks.
+  own mobile core networks. This restricts hardware and software
+  licenses, and may affect architectural decisions.
+
+These qualities are out of scope for the prototypes.
 
 == Previous work <sec:previous-work>
 
@@ -314,7 +255,8 @@ open hardware and source code that is used in this project.
 Polygator @polygator-sim-bank and others offer SIM banks but the
 products are too restrictive and incapable for Leissner's purposes.
 The communications protocols when communicating with the SIM bank
-may be proprietary and documentation unavailable.
+may be proprietary and documentation unavailable. It makes them
+unfit for use in product development.
 
 == Theory <sec:theory>
 
@@ -326,6 +268,12 @@ use of SIM and how it relates to the implementation.
 Definitions and descriptions of terminology used in the report are
 provided here. A word is defined if it has a specific definition in
 regards to this document or if the term carries extra relevance.
+
+==== Personal Computer/Smart Card (PC/SC) <sec:pcsc>
+
+PC/SC is a software toolkit for communication with smart cards
+@pcsc. It enables personal computers to use smart card readers,
+both USB readers and integrated readers.
 
 ==== User Equipment <sec:user-equipment>
 
@@ -395,7 +343,7 @@ This section cites Sommerville's seminal work Software Engineering
 @sommerville-software-engineering. Requirements engineering is the
 craft of finding, defining, validating, and changing requirements
 for the solution of a problem. Requirements grow and change
-alongside the lifecycle of a project and requirements engineering
+alongside the life cycle of a project and requirements engineering
 is a formalization of how the process works. Requirements can be
 separated into functional and non-functional where functional
 requirements specify what a system should do while non-functional
@@ -434,7 +382,7 @@ implementation constraints, response time and interface design.
 = Methodology <sec:methodology>
 
 This chapter elaborates on the material, equipment, and methods
-used to design a prototype for forwarding APDU packets.
+used to design prototypes for forwarding APDU packets.
 
 == Materials and equipment <sec:materials>
 
@@ -461,8 +409,8 @@ Osmocom. This firmware is called `cardem` @simtrace-wiki and is
 used for communicating with user equipment, sending APDU packets
 either constructed by software or forwarded from a remotely
 accessed smart card. The hardware is capable of tracing and
-emulating all kinds of ISO 7816 @etsi-ts-102-221 smart cards when
-the T=0 protocol is used @simtrace-wiki but the focus is on SIM.
+emulating all kinds of ISO 7816 @etsi-ts-102-221 smart cards
+@simtrace-wiki but the focus is on SIM.
 
 === Raspberry Pi 4 <sec:materials:raspberry-pi>
 
@@ -484,10 +432,10 @@ as a gateway between the mobile network and the local network.
 <sec:materials:miscellaneous>
 
 A Gemalto smart card reader is used where any PC/SC-compatible
-would suffice. The smart card reader is connected to a Raspberry Pi
-and provides access to a smart card. The APDU from the smart card
-may be forwarded over IP to a destination device, in this case the
-UE sink.
+reader would suffice. The smart card reader is connected to a
+Raspberry Pi and provides access to a smart card. The APDU from the
+smart card may be forwarded over IP to a destination device, in
+this case the UE sink.
 
 Leissner-provided SIM with a provisioned subscription are used
 where any SIM would suffice. A basic router is used to provide IP
@@ -495,13 +443,13 @@ network access for the Raspberry Pi.
 
 == Prototype implementation <sec:prototype-development>
 
-The prototype @sommerville-software-engineering
+The prototypes @sommerville-software-engineering
 @thomas-hunt-pragmatic-programmer is for exploring the technical
 problems, and eliciting requirements to be used in future work.
 Since only APDU forwarding is in scope, @fig:prototype-diagram is
 the smallest design that tests the function. It entails the design
-of a protocol that carries APDU information between the smart card
-reader and the SIMtrace device.
+of a protocol that carries APDU and ATR information between the
+smart card reader and the SIMtrace device.
 
 = Results <sec:results>
 
@@ -513,11 +461,12 @@ applications.
 == The prototype <sec:results:prototype>
 
 This is implemented in two parts: the SIM bank and the UE sink, as
-shown in @fig:prototype-diagram. The bank uses the PC/SC abstraction
-for C++ provided by @electronic-id. The sink uses the SIMtrace 2 and
-Osmocom core libraries @simtrace-library @osmocom-osmocore for
-communication with and management of the SIMtrace 2 device and UE.
-The implementation is available on GitHub @source.
+shown in @fig:prototype-diagram. The bank uses the PC/SC
+abstraction for C++ provided by @electronic-id. The sink uses the
+SIMtrace 2 and Osmocom core libraries @simtrace-library
+@osmocom-osmocore for communication with and management of the
+SIMtrace 2 device and UE. The implementation is available on GitHub
+@source.
 
 The prototype has support for SIM bank to UE sink communication;
 though, the UE sink has no ability to communicate with the UE
@@ -564,7 +513,7 @@ payload is APDU data. The second is to denote ATR data payload. The
 third is to inform the UE that the previously inserted card is
 disconnected. The last type is used for halting the connection.
 
-= Analysis/Discussion <sec:analysis>
+= Analysis <sec:analysis>
 
 The prototype succeeded in what it set out to do; it forwards
 APDU packets from an SIM to a UE. The UE, however, lacks in its
@@ -586,13 +535,15 @@ or SIM reprogramming serve no purpose if no APDU packets can be
 transferred over the network. This leads into discussing potential
 future work.
 
+== Future work
+
 To remain in line with thorough software engineering practices
 @sommerville-software-engineering, additional prototyping for the
 aforementioned features may be conducted. Additionally, experiments
 of the functionality in different programming languages can provide
 insight on what languages are most optimal for the problem at hand.
 
-The prototype in this report was implemented in C++ first because
+The prototypes in this report were implemented in C++ first because
 that is one of the primary languages used at Leissner and second
 because it could integrate with the PC/SC and Osmocom libraries.
 Experiments in other languages should take library availability in
@@ -630,9 +581,10 @@ commonly used Cmake or others. This led to requiring to install the
 binaries with the system package manager and mark them as
 system-only in `xmake`.
 
-= Conclusions <sec:conclusions>
+== Conclusions <sec:conclusions>
 
-With plenty of additional work available, the prototype succeeded
-in its goal of being able to forward APDU packets. With a protocol
+With plenty of additional work available, the prototypes succeeded
+in their goal of being able to forward APDU packets. With a protocol
 designed for managing SIM and UE state future work has a baseline
-to expand upon.
+to expand upon. This provided knowledge and experience useful for
+the design of the mediator.

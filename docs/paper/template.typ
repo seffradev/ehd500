@@ -42,9 +42,7 @@ swedish_abstract: [], preface: [], abbreviations: (), doc) = {
 
   set align(left)
   text(14pt, ..authors.map(author => [
-    #author.name \
-    #author.affiliation \
-    #link("mailto:" + author.email)
+    #author.name
   ]))
 
   align(bottom + left)[
